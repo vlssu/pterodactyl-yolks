@@ -1,4 +1,4 @@
-FROM        ghcr.io/parkervcp/yolks:debian
+FROM        registry.cn-shanghai.aliyuncs.com/vlssu/yolks:debian
 
 LABEL       author="Torsten Widmann" maintainer="support@goover.de"
 

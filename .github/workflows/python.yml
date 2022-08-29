@@ -31,8 +31,8 @@ jobs:
           buildkitd-flags: --debug
       - uses: docker/login-action@v2
         with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          registry: registry.cn-shanghai.aliyuncs.com
+          username: ${{ secrets.REPOSITORY_OWNER }}
           password: ${{ secrets.REGISTRY_TOKEN }}
       - uses: docker/build-push-action@v3
         with:
@@ -41,4 +41,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/parkervcp/yolks:python_${{ matrix.tag }}
+            registry.cn-shanghai.aliyuncs.com/vlssu/yolks:python_${{ matrix.tag }}
