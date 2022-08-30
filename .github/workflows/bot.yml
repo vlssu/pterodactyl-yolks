@@ -50,7 +50,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-new
           push: true
           tags: |
-            registry.cn-shanghai.aliyuncs.com/vlssu/yolks:bot_${{ matrix.tag }}
+            registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:bot_${{ matrix.tag }}
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
@@ -82,4 +82,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            registry.cn-shanghai.aliyuncs.com/vlssu/yolks:bot_${{ matrix.tag }}
+            registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:bot_${{ matrix.tag }}

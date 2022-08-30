@@ -38,4 +38,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            registry.cn-shanghai.aliyuncs.com/vlssu/yolks:${{ matrix.oses }}
+            registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:${{ matrix.oses }}

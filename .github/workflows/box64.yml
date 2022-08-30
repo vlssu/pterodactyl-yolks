@@ -36,4 +36,4 @@ jobs:
           platforms: linux/arm64
           push: true
           tags: |
-            registry.cn-shanghai.aliyuncs.com/vlssu/yolks:${{ matrix.tag }}
+            registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:${{ matrix.tag }}

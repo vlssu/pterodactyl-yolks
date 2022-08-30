@@ -36,4 +36,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            registry.cn-shanghai.aliyuncs.com/vlssu/installers:${{ matrix.tag }}
+            registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:${{ matrix.tag }}

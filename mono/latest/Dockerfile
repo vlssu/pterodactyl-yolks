@@ -1,4 +1,4 @@
-FROM        registry.cn-shanghai.aliyuncs.com/vlssu/yolks:debian
+FROM        registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:debian
 
 LABEL       author="Torsten Widmann" maintainer="support@goover.de"
 
