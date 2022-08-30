@@ -1,30 +1,21 @@
 # Yolks
 
-A curated collection of core images that can be used with Pterodactyl's Egg system. Each image is rebuilt
-periodically to ensure dependencies are always up-to-date.
+可与翼龙的 Egg 系统(预设)一起使用的精选核心镜像合集。每个镜像都会定期重建，以确保依赖关系始终是最新的。
 
-Images are hosted on `ghcr.io` and exist under the `games`, `installers`, and `yolks` spaces. The following logic
-is used when determining which space an image will live under:
+镜像托管在 `registry.cn-shanghai.aliyuncs.com` 上，并存在于 `games`、`installers` 和 `yolks` 空间下。 在确定镜像将位于哪个空间下时使用以下逻辑：
 
-* `games` — anything within the `games` folder in the repository. These are images built for running a specific game
-or type of game.
-* `installers` — anything living within the `installers` directory. These images are used by install scripts for different
-Eggs within Pterodactyl, not for actually running a game server. These images are only designed to reduce installation time
-and network usage by pre-installing common installation dependencies such as `curl` and `wget`.
-* `yolks` — these are more generic images that allow different types of games or scripts to run. They're generally just
-a specific version of software and allow different Eggs within Pterodactyl to switch out the underlying implementation. An
-example of this would be something like Java or Python which are used for running bots, Minecraft servers, etc.
+* `oses` — 包含核心包的基础镜像，帮助您入门。
+* `games` — 存储库中 `games` 文件夹中的任何内容。这些是为运行特定游戏或游戏类型而构建的镜像。
+* `installers` — `installers` 目录中的任何内容。这些镜像将被用于预设的安装脚本使用，而不是用于实际运行游戏服务器。这些镜像仅旨在通预安装常见的安装依赖项（例如 `curl` 和 `wget`）来减少安装时间和额外网络开支。
+* `yolks` — 这些是更通用的图像，允许运行不同类型的游戏或脚本。它们通常只是特定版本的软件，并允许翼龙中的不同预设切换使用环境。例如用于运行机器人、Minecraft 服务器等 Java 或 Python 之类的环境。
 
-All of these images are available for `linux/amd64` and `linux/arm64` versions, unless otherwise specified, to use
-these images on an arm system, no modification to them or the tag is needed, they should just work.
+所有这些镜像都可用于 `linux/amd64` 和 `linux/arm64` 版本，除非另有说明，要在 arm64 系统上使用这些镜像，不需要对它们的标签进行修改，它们应该可以正常工作。
 
-## Contributing
+## 贡献
 
-When adding a new version to an existing image, such as `java v42`, you'd add it within a child folder of `java`, so
-`java/42/Dockerfile` for example. Please also update the correct `.github/workflows` file to ensure that this new version
-is tagged correctly.
+当向现有镜像添加新版本时，例如 `java v42`，您需要将其添加到 `java` 的子文件夹中，例如 `java/42/Dockerfile`。还请更新正确的 `.github/workflows` 文件，以确保正确标记此新版本。
 
-## Available Images
+## 可用镜像
 
 ### [Oses](/oses)
 
