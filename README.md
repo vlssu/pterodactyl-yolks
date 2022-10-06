@@ -83,6 +83,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:samp`  
 * [`source`](/games/source)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:source`
+* [`valheim`](/games/valheim)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:valheim`
 
 ### [Golang](/go)
 
@@ -92,6 +94,12 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.15`
 * [`go1.16`](/go/1.16)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.16`
+* [`go1.17`](/go/1.17)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.17`
+* [`go1.18`](/go/1.18)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.18`
+* [`go1.19`](/go/1.19)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.19`
 
 ### [Java](/java)
 
@@ -109,6 +117,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_16`
 * [`java17`](/java/17)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_17`
+* [`java19`](/java/19)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_19`
 
 ### [MariaDB](/mariadb)
 
@@ -212,3 +222,5 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:alpine`
 * [`debian-install`](/installers/debian)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:debian`
+* [`ubuntu-install`](/installers/ubuntu)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:ubuntu`
