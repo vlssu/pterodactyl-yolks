@@ -221,6 +221,7 @@
 
 * [`Wine`](/wine)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_latest`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_staging`
 
 ### [Installation Images](/installers)
 
