@@ -108,16 +108,10 @@
 
 ### [Java](/java)
 
-* [`java7`](/java/7)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_7`
 * [`java8`](/java/8)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_8`
-* [`java9`](/java/9)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_9`
 * [`java11`](/java/11)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_11`
-* [`java14`](/java/14)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_14`
 * [`java16`](/java/16)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_16`
 * [`java17`](/java/17)
@@ -190,6 +184,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.9`
 * [`python3.10`](/python/3.10)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.10`
+* [`python3.11`](/python/3.11)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.11`
 
 ### [Redis](/redis)
 
