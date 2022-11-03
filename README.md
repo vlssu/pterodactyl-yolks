@@ -91,6 +91,17 @@
 * [`valheim`](/games/valheim)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:valheim`
 
+### [MCDR](/mcdr)
+
+* [`mcdr_java_8`](/mcdr/8)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mcdr_java_8`
+* [`mcdr_java_11`](/mcdr/11)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mcdr_java_11`
+* [`mcdr_java_16`](/mcdr/16)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mcdr_java_16`
+* [`mcdr_java_17`](/mcdr/17)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mcdr_java_17`
+
 ### [Golang](/go)
 
 * [`go1.14`](/go/1.14)
