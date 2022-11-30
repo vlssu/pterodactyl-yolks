@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/bash
 cd /home/container
 
 # Set environment variable that holds the Internal Docker IP

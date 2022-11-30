@@ -64,6 +64,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_5`
 * [`dotnet6.0`](/dotnet/6)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_6`
+* [`dotnet7.0`](/dotnet/7)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_7`
 
 ### [Erlang](/erlang)
 

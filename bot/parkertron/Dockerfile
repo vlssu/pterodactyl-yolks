@@ -1,13 +1,20 @@
-FROM --platform=$TARGETOS/$TARGETARCH alpine:3.9
+FROM    --platform=$TARGETOS/$TARGETARCH debian:bullseye
 
-LABEL author="Michael Parker" maintainer="parker@pterodactyl.io"
+LABEL   author="Michael Parker" maintainer="parker@pterodactyl.io"
 
-RUN         apk add --update --no-cache git curl lua-stdlib lua musl-dev g++ libc-dev tesseract-ocr tesseract-ocr-dev \
-            && adduser -D -h /home/container container
+ENV     DEBIAN_FRONTEND noninteractive
 
-USER        container
-ENV         USER=container HOME=/home/container
-WORKDIR     /home/container
+RUN     apt update -y \
+        # general packages
+     && apt install -y iproute2 ca-certificates \
+        # additional packages for tesseract and eng lang support
+        libtesseract-dev tesseract-ocr-eng \
+        # add container user to run application
+     && useradd -m -d /home/container container
 
-COPY ./entrypoint.sh /entrypoint.sh
-CMD ["/bin/ash", "/entrypoint.sh"]
+USER    container
+ENV     USER=container HOME=/home/container
+WORKDIR /home/container
+
+COPY    ./entrypoint.sh /entrypoint.sh
+CMD     ["/bin/bash", "/entrypoint.sh"]
