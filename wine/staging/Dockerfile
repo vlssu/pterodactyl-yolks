@@ -1,7 +1,7 @@
 # ---------------------------------------
-# Generic Wine image based on Wine staging 
+# Generic Wine image based on Wine staging
 # ---------------------------------------
-FROM    ghcr.io/parkervcp/yolks:debian
+FROM    registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:debian
 
 LABEL   author="Michael Parker" maintainer="parker@pterodactyl.io"
 

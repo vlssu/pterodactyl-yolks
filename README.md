@@ -222,11 +222,11 @@
 
 ### [SteamCMD](/steamcmd)
 * [`SteamCMD Debian lastest`](/steamcmd/debian)
-  * `ghcr.io/parkervcp/steamcmd:debian`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:debian`
 * [`SteamCMD Debian Dotnet`](/steamcmd/dotnet)
-  * `ghcr.io/parkervcp/steamcmd:dotnet`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:dotnet`
 * [`SteamCMD Ubuntu latest LTS`](/steamcmd/ubuntu)
-  * `ghcr.io/parkervcp/steamcmd:ubuntu`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:ubuntu`
 
 ### [Voice](/voice)
 * [`Mumble`](/voice/mumble)
