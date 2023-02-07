@@ -130,6 +130,17 @@ is tagged correctly.
 * [`java19`](/java/19)
   * `ghcr.io/parkervcp/yolks:java_19`
 
+### [MCDReforged](/mcdr)
+
+* [`mcdr_java_8`](/mcdr/8)
+  * `ghcr.io/parkervcp/games:mcdr_java_8`
+* [`mcdr_java_11`](/mcdr/11)
+  * `ghcr.io/parkervcp/games:mcdr_java_11`
+* [`mcdr_java_16`](/mcdr/16)
+  * `ghcr.io/parkervcp/games:mcdr_java_16`
+* [`mcdr_java_17`](/mcdr/17)
+  * `ghcr.io/parkervcp/games:mcdr_java_17`
+
 ### [MariaDB](/mariadb)
 
   * [`MariaDB 10.3`](/mariadb/10.3)
