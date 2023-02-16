@@ -140,6 +140,8 @@ is tagged correctly.
   * `ghcr.io/parkervcp/games:mcdr_java_16`
 * [`mcdr_java_17`](/mcdr/17)
   * `ghcr.io/parkervcp/games:mcdr_java_17`
+* [`mcdr_java_19`](/mcdr/19)
+  * `ghcr.io/parkervcp/games:mcdr_java_19`
 
 ### [MariaDB](/mariadb)
 
