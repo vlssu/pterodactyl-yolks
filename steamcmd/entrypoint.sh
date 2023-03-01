@@ -33,9 +33,23 @@ export TZ
 INTERNAL_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')
 export INTERNAL_IP
 
+# Set environment for Steam Proton
+if [ -f "/usr/local/bin/proton" ]; then
+    if [ ! -z ${SRCDS_APPID} ]; then
+	    mkdir -p /home/container/.steam/steam/steamapps/compatdata/${SRCDS_APPID}
+        export STEAM_COMPAT_CLIENT_INSTALL_PATH="/home/container/.steam/steam"
+        export STEAM_COMPAT_DATA_PATH="/home/container/.steam/steam/steamapps/compatdata/${SRCDS_APPID}"
+    else
+        echo -e "----------------------------------------------------------------------------------"
+        echo -e "WARNING!!! Proton needs variable SRCDS_APPID, else it will not work. Please add it"
+        echo -e "Server stops now"
+        echo -e "----------------------------------------------------------------------------------"
+        exit 0
+        fi
+fi
+
 # Switch to the container's working directory
 cd /home/container || exit 1
-
 
 ## just in case someone removed the defaults.
 if [ "${STEAM_USER}" == "" ]; then

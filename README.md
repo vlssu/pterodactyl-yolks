@@ -225,6 +225,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:debian`
 * [`SteamCMD Debian Dotnet`](/steamcmd/dotnet)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:dotnet`
+* [`SteamCMD Proton`](/steamcmd/proton)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:proton`
 * [`SteamCMD Ubuntu latest LTS`](/steamcmd/ubuntu)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:ubuntu`
 

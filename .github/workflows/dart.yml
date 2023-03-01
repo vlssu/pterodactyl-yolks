@@ -17,6 +17,8 @@ jobs:
       matrix:
         tag:
           - 2.17
+          - 2.18
+          - 2.19
     steps:
       - uses: actions/checkout@v3
       # Setup QEMU for ARM64 Build
@@ -29,7 +31,7 @@ jobs:
           registry: registry.cn-shanghai.aliyuncs.com
           username: ${{ secrets.REPOSITORY_OWNER }}
           password: ${{ secrets.REGISTRY_TOKEN }}
-      - uses: docker/build-push-action@v3
+      - uses: docker/build-push-action@v4
         with:
           context: ./dart
           file: ./dart/${{ matrix.tag }}/Dockerfile

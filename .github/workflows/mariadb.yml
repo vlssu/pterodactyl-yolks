@@ -33,7 +33,7 @@ jobs:
           registry: registry.cn-shanghai.aliyuncs.com
           username: ${{ secrets.REPOSITORY_OWNER }}
           password: ${{ secrets.REGISTRY_TOKEN }}
-      - uses: docker/build-push-action@v3
+      - uses: docker/build-push-action@v4
         with:
           context: ./mariadb
           file: ./mariadb/${{ matrix.tag }}/Dockerfile
