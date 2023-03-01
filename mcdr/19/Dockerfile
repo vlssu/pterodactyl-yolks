@@ -7,7 +7,7 @@ RUN         apt update \
             && useradd -m -d /home/container container
 
 ENV         JAVA_HOME=/opt/java/openjdk
-COPY        --from=eclipse-temurin:11-jdk-focal $JAVA_HOME $JAVA_HOME
+COPY        --from=eclipse-temurin:19-jdk-focal $JAVA_HOME $JAVA_HOME
 ENV         PATH="${JAVA_HOME}/bin:${PATH}"
 
 RUN         pip install mcdreforged parse hjson
