@@ -19,6 +19,10 @@ RUN         cd /tmp/ \
             && tar xvf rcon.tar.gz \
             && mv rcon-0.10.2-amd64_linux/rcon /usr/local/bin/
 
+RUN         apt-get install -y locales
+RUN         localedef -c -f UTF-8 -i zh_CN zh_CN.utf8
+ENV         LANG zh_CN.utf8
+
 USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container
