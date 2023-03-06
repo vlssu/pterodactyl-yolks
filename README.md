@@ -85,7 +85,7 @@
 * [`dayz`](/games/dayz)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:dayz`
 * [`mohaa`](games/mohaa)
-  * `ghcr.io/pterodactyl/games:mohaa`  
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mohaa`  
 * [`samp`](/games/samp)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:samp`  
 * [`source`](/games/source)
