@@ -35,9 +35,11 @@ RUN         dpkg --add-architecture i386 \
             && apt install -y tar curl gcc g++ lib32gcc-s1 libgcc1 libcurl4-gnutls-dev:i386 libssl1.1:i386 libcurl4:i386 lib32tinfo6 libtinfo6:i386 lib32z1 lib32stdc++6 libncurses5:i386 libcurl3-gnutls:i386 libsdl2-2.0-0:i386 iproute2 gdb libsdl1.2debian libfontconfig1 telnet net-tools netcat tzdata numactl file \
             && useradd -m -d /home/container container
 
-RUN         apt-get install -y locales
-RUN         localedef -c -f UTF-8 -i zh_CN zh_CN.utf8
-ENV         LANG zh_CN.utf8 
+RUN 		apt-get install -y locales
+RUN 		sed -i -e 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+ENV 		LANG en_US.UTF-8
+ENV 		LANGUAGE en_US:zh_CN
+ENV 		LC_ALL en_US.UTF-8
 
 ## install rcon
 RUN         cd /tmp/ \

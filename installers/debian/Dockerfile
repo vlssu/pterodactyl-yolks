@@ -34,6 +34,8 @@ RUN         dpkg --add-architecture i386 \
 				&& apt upgrade -y \
 				&& apt -y --no-install-recommends install ca-certificates curl lib32gcc-s1 libsdl2-2.0-0:i386 git unzip zip tar jq wget
 
-RUN         apt-get install -y locales
-RUN         localedef -c -f UTF-8 -i zh_CN zh_CN.utf8
-ENV         LANG zh_CN.utf8
+RUN 		apt-get install -y locales
+RUN 		sed -i -e 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+ENV 		LANG en_US.UTF-8
+ENV 		LANGUAGE en_US:zh_CN
+ENV 		LC_ALL en_US.UTF-8
