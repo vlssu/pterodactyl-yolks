@@ -171,6 +171,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_17`
 * [`node18`](/nodejs/18)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_18`
+* [`node19`](/nodejs/19)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_19`
 
 ### [PostgreSQL](/postgres)
 
