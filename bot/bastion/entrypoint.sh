@@ -1,4 +1,21 @@
 #!/bin/bash
+#Variables
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+clear
+#show versions
+echo -e "${BLUE}-------------------------------------------------${NC}"
+echo -e "${YELLOW}BastionBot Installation${NC}"
+echo -e "${BLUE}-------------------------------------------------${NC}"
+echo -e "${YELLOW}MongoDB Version:${NC} " && mongod --version
+echo -e "${YELLOW}NodeJS Version:${NC} " && node -v
+echo -e "${YELLOW}Python Version:${NC} " && python3 --version
+echo -e "${BLUE}-------------------------------------------------${NC}"
+
 cd /home/container
 
 # Set environment variable that holds the Internal Docker IP
@@ -7,13 +24,19 @@ export INTERNAL_IP
 
 # Replace Startup Variables
 MODIFIED_STARTUP=$(echo -e $(echo -e ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g'))
-echo -e ":/home/container$ ${MODIFIED_STARTUP}"
+echo -e "${YELLOW}:/home/container${NC} ${MODIFIED_STARTUP}"
 
 # start mongo
-mongod --fork --dbpath /home/container/mongodb/ --port 27017 --logpath /home/container/mongod.log && until nc -z -v -w5 127.0.0.1 27017; do echo 'Waiting for mongodb connection...'; sleep 5; done
+echo -e "${BLUE}-------------------------------------------------${NC}"
+echo -e "${YELLOW}starting MongoDB...${NC}"
+echo -e "${BLUE}-------------------------------------------------${NC}"
+mongod --fork --dbpath /home/container/mongodb/ --port 27017 --logpath /home/container/mongod.log --logRotate reopen --logappend && until nc -z -v -w5 127.0.0.1 27017; do echo 'Waiting for mongodb connection...'; sleep 5; done
 
 # Run the Server
+echo -e "${BLUE}-------------------------------------------------${NC}"
+echo -e "${YELLOW}BastionBot starting...${NC}"
+echo -e "${BLUE}-------------------------------------------------${NC}"
 eval ${MODIFIED_STARTUP}
 
 # stop mongo
-mongo --eval \"db.getSiblingDB('admin').shutdownServer()\
+mongod --eval "db.adminCommand({ "shutdown" : 1 })"
