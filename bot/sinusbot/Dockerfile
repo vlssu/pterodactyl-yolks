@@ -1,4 +1,4 @@
-FROM        --platform=$TARGETOS/$TARGETARCH debian:stable-slim
+FROM        --platform=$TARGETOS/$TARGETARCH debian:bullseye-slim
 
 LABEL       org.opencontainers.image.authors="i2007@damw.eu"
 LABEL       version="1.0"

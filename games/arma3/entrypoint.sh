@@ -54,7 +54,8 @@ function RunSteamCMD { #[Input: int server=0 mod=1 optional_mod=2; int id]
 
         # Error checking for SteamCMD
         steamcmdExitCode=${PIPESTATUS[0]}
-        if [[ -n $(grep -i "error\|failed" "${STEAMCMD_LOG}" | grep -iv "setlocal\|SDL\|thread") ]]; then # Catch errors (ignore setlocale, SDL, and thread priority warnings)
+        loggedErrors=$(grep -i "error\|failed" "${STEAMCMD_LOG}" | grep -iv "setlocal\|SDL\|steamservice\|thread")
+        if [[ -n ${loggedErrors} ]]; then # Catch errors (ignore setlocale, SDL, steamservice, and thread priority warnings)
             # Soft errors
             if [[ -n $(grep -i "Timeout downloading item" "${STEAMCMD_LOG}") ]]; then # Mod download timeout
                 echo -e "\n${YELLOW}[UPDATE]: ${NC}Timeout downloading Steam Workshop mod: \"${CYAN}${modName}${NC}\" (${CYAN}${2}${NC})"
@@ -72,7 +73,8 @@ function RunSteamCMD { #[Input: int server=0 mod=1 optional_mod=2; int id]
                 echo -e "\n${RED}[UPDATE]: Cannot login to Steam - Improperly configured account and/or credentials"
                 echo -e "\t${YELLOW}Please contact your administrator/host and give them the following message:${NC}"
                 echo -e "\t${CYAN}Your Egg, or your client's server, is not configured with valid Steam credentials.${NC}"
-                echo -e "\t${CYAN}Either the username/password is wrong, or Steam Guard is not properly configured\n\taccording to this egg's documentation/README.${NC}\n"
+                echo -e "\t${CYAN}Either the username/password is wrong, or Steam Guard is not properly configured"
+                echo -e "\t${CYAN}according to this egg's documentation/README.${NC}\n"
                 exit 1
             elif [[ -n $(grep -i "Download item" "${STEAMCMD_LOG}") ]]; then # Steam account does not own base game for mod downloads, or unknown
                 echo -e "\n${RED}[UPDATE]: Cannot download mod - Download failed"
@@ -86,12 +88,14 @@ function RunSteamCMD { #[Input: int server=0 mod=1 optional_mod=2; int id]
                 exit 1
             elif [[ -n $(grep -i "0x606" "${STEAMCMD_LOG}") ]]; then # Disk write failure
                 echo -e "\n${RED}[UPDATE]: Unable to complete download - Disk write failure"
-                echo -e "\t${YELLOW}This is normally caused by directory permissions issues,\n\tbut could be a more serious hardware issue.${NC}"
+                echo -e "\t${YELLOW}This is normally caused by directory permissions issues,"
+                echo -e "\t${YELLOW}but could be a more serious hardware issue.${NC}"
                 echo -e "\t${YELLOW}(Please contact your administrator/host if this issue persists)${NC}\n"
                 exit 1
             else # Unknown caught error
                 echo -e "\n${RED}[UPDATE]: ${YELLOW}An unknown error has occurred with SteamCMD. ${CYAN}Skipping download...${NC}"
-                echo -e "\t(Please contact your administrator/host if this issue persists)"
+                echo -e "SteamCMD Errors:\n${loggedErrors}"
+                echo -e "\t${YELLOW}(Please contact your administrator/host if this issue persists)${NC}\n"
                 break
             fi
         elif [[ $steamcmdExitCode != 0 ]]; then # Unknown fatal error
@@ -222,7 +226,7 @@ allMods=$(echo $allMods | sed -e 's/;/ /g') # Convert from string to array
 # Update everything (server and mods), if specified
 if [[ ${UPDATE_SERVER} == 1 ]]; then
     echo -e "\n${GREEN}[STARTUP]: ${CYAN}Starting checks for all updates...${NC}"
-    echo -e "(It is okay to ignore any \"SDL\" and \"thread priority\" errors during this process)\n"
+    echo -e "(It is okay to ignore any \"SDL\", \"steamservice\", and \"thread priority\" errors during this process)\n"
 
     ## Update game server
     echo -e "${GREEN}[UPDATE]:${NC} Checking for game server updates with App ID: ${CYAN}${STEAMCMD_APPID}${NC}..."

@@ -1,4 +1,4 @@
-FROM        --platform=$BUILDPLATFORM debian:stable-slim
+FROM        --platform=$BUILDPLATFORM debian:bullseye-slim
 
 LABEL       author="David Wolfe (Red-Thirten)" maintainer="rehlmgaming@gmail.com"
 
