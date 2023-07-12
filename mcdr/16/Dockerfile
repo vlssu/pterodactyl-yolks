@@ -10,7 +10,7 @@ ENV         JAVA_HOME=/opt/java/openjdk
 COPY        --from=eclipse-temurin:16-jdk-focal $JAVA_HOME $JAVA_HOME
 ENV         PATH="${JAVA_HOME}/bin:${PATH}"
 
-RUN         pip install mcdreforged parse hjson pycryptodome colorlog
+RUN         pip install mcdreforged parse hjson pycryptodome colorlog py-cpuinfo simpleeval
 
 USER        container
 ENV         USER=container HOME=/home/container
