@@ -84,6 +84,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:arma3`
 * [`dayz`](/games/dayz)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:dayz`
+* [`minetest`](/games/minetest)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:minetest`  
 * [`mohaa`](games/mohaa)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mohaa`  
 * [`samp`](/games/samp)
@@ -92,17 +94,6 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:source`
 * [`valheim`](/games/valheim)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:valheim`
-
-### [MCDR](/mcdr)
-
-* [`mcdr_java_8`](/mcdr/8)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mcdr_java_8`
-* [`mcdr_java_11`](/mcdr/11)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mcdr_java_11`
-* [`mcdr_java_16`](/mcdr/16)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mcdr_java_16`
-* [`mcdr_java_17`](/mcdr/17)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mcdr_java_17`
 
 ### [Golang](/go)
 
@@ -244,6 +235,7 @@
 
 * [`Wine`](/wine)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_latest`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_devel`
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_staging`
 
 ### [Installation Images](/installers)

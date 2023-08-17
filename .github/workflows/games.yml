@@ -9,8 +9,8 @@ on:
     paths:
       - games/**
 jobs:
-  push:
-    name: "games:${{ matrix.game }}"
+  pushAMD64:
+    name: "games_AMD64:${{ matrix.game }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -40,6 +40,36 @@ jobs:
           context: ./games/${{ matrix.game }}
           file: ./games/${{ matrix.game }}/Dockerfile
           platforms: linux/amd64
+          push: true
+          tags: |
+            registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:${{ matrix.game }}
+  pushAll:
+    name: "games_All:${{ matrix.game }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        game:
+          - minetest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: arm64,amd64
+      - uses: docker/setup-buildx-action@v2
+        with:
+          buildkitd-flags: --debug
+      - uses: docker/login-action@v2
+        with:
+          registry: registry.cn-shanghai.aliyuncs.com
+          username: ${{ secrets.REPOSITORY_OWNER }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+      - uses: docker/build-push-action@v4
+        with:
+          context: ./games/${{ matrix.game }}
+          file: ./games/${{ matrix.game }}/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:${{ matrix.game }}

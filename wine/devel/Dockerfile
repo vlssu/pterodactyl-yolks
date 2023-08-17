@@ -1,7 +1,7 @@
 # ---------------------------------------
-# Generic Wine image based on Wine stable
+# Generic Wine image based on Wine devel 
 # ---------------------------------------
-FROM            registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:debian
+FROM            ghcr.io/parkervcp/yolks:debian
 
 LABEL           author="Michael Parker" maintainer="parker@pterodactyl.io"
 LABEL           org.opencontainers.image.licenses=MIT
@@ -16,7 +16,7 @@ RUN             mkdir -pm755 /etc/apt/keyrings
 RUN             wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
 RUN             wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources
 RUN             apt update
-RUN             apt install --install-recommends winehq-stable cabextract wine-binfmt -y
+RUN             apt install --install-recommends winehq-devel cabextract wine-binfmt -y
 
 # Set up Winetricks
 RUN	            wget -q -O /usr/sbin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \

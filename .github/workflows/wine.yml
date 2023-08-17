@@ -17,6 +17,7 @@ jobs:
       matrix:
         tag:
           - latest
+          - devel
           - staging
     steps:
       - uses: actions/checkout@v3
