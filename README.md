@@ -42,6 +42,13 @@
 * [`Box64`](/box64)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:box64`
 
+### [Bun](/bun)
+
+* [`Bun Canary`](/bun/canary)
+  * `ghcr.io/parkervcp/yolks:bun_canary`
+* [`Bun Latest`](/bun/latest)
+  * `ghcr.io/parkervcp/yolks:bun_latest`
+
 ### [Cassandra](/cassandra)
 
 * [`cassandra_java8_python27`](/cassandra/cassandra_java8_python2)
@@ -166,6 +173,7 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/parkervcp/yolks:nodejs_19`
 * [`node20`](/nodejs/20)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/parkervcp/yolks:nodejs_20`
+
 
 ### [PostgreSQL](/postgres)
 
