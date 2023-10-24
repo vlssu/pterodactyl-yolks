@@ -36,4 +36,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/parkervcp/yolks:bun_${{ matrix.tag }}
+            registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:bun_${{ matrix.tag }}
