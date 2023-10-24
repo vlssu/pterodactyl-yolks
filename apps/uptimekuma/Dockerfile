@@ -12,6 +12,7 @@ RUN         apk add --no-cache \
                 automake \
                 build-base \
                 ca-certificates\
+                chromium \
                 curl \
                 bind-tools \
 				ffmpeg \
@@ -24,6 +25,7 @@ RUN         apk add --no-cache \
                 libtool \
                 python3 \
                 python3-dev \
+                py3-pip \
                 sqlite \
                 tzdata \
                 zip \
@@ -37,6 +39,9 @@ ARG         TARGETPLATFORM
 RUN         if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCHITECTURE=amd64; elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then ARCHITECTURE=arm64; fi \
             && curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${ARCHITECTURE} -o /usr/bin/cloudflared
 RUN         chmod +x /usr/bin/cloudflared
+
+# install apprise
+RUN         pip install apprise
 
 ## Setup user and working directory
 RUN         adduser -D -h /home/container container -s /bin/bash container

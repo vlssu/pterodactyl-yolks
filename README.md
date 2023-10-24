@@ -29,7 +29,7 @@
 ### [Apps](/apps)
 
 * [`uptimekuma`](/apps/uptimekuma)
-  * `ghcr.io/parkervcp/yolks:apps_uptimekuma`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:apps_uptimekuma`
 
 ### [Bot](/bot)
 
@@ -50,9 +50,9 @@
 ### [Bun](/bun)
 
 * [`Bun Canary`](/bun/canary)
-  * `ghcr.io/parkervcp/yolks:bun_canary`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:bun_canary`
 * [`Bun Latest`](/bun/latest)
-  * `ghcr.io/parkervcp/yolks:bun_latest`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:bun_latest`
 
 ### [Cassandra](/cassandra)
 
@@ -82,15 +82,15 @@
 ### [Elixir](/elixir)
 
 * [`elixir 1.12`](/elixir/1.12)
-  * `ghcr.io/parkervcp/yolks:elixir_1.12`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:elixir_1.12`
 * [`elixir 1.13`](/elixir/1.13)
-  * `ghcr.io/parkervcp/yolks:elixir_1.13`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:elixir_1.13`
 * [`elixir 1.14`](/elixir/1.14)
-  * `ghcr.io/parkervcp/yolks:elixir_1.14`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:elixir_1.14`
 * [`elixir 1.15`](/elixir/1.12)
-  * `ghcr.io/parkervcp/yolks:elixir_1.15`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:elixir_1.15`
 * [`elixir latest`](/elixir/latest)
-  * `ghcr.io/parkervcp/yolks:elixir_latest`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:elixir_latest`
 
 ### [Erlang](/erlang)
 
@@ -134,6 +134,10 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.18`
 * [`go1.19`](/go/1.19)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.19`
+* [`go1.20`](/go/1.20)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.20`
+* [`go1.21`](/go/1.21)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.21`
 
 ### [Java](/java)
 
@@ -220,6 +224,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.10`
 * [`python3.11`](/python/3.11)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.11`
+* [`python3.12`](/python/3.12)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.12`
 
 ### [Redis](/redis)
 
