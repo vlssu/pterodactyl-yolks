@@ -2,6 +2,7 @@ FROM          --platform=$TARGETOS/$TARGETARCH python:3.11-slim
 
 LABEL         author="Michael Parker" maintainer="parker@pterodactyl.io"
 
+
 RUN           mkdir -p /usr/share/man/man1
 RUN           apt update \
               && apt -y upgrade \
@@ -32,10 +33,11 @@ RUN           apt update \
                      libexpat1-dev \
                      liblzma-dev \
                      ffmpeg \
-                     imagemagick
+                     imagemagick \
+					 tini
 
 RUN           pip install --upgrade pip
-RUN           pip install python-forecastio tweepy unidecode discord-text-sanitizer mcstatus bs4 sqlalchemy geocoder valve python-valve py-cpuinfo psutil
+RUN           pip install python-forecastio tweepy unidecode mcstatus bs4 sqlalchemy geocoder valve python-valve py-cpuinfo psutil
 
 RUN           mkdir -p /home/container/.config/Red-DiscordBot/
 RUN           ln -s /home/container/.config/Red-DiscordBot/ /usr/local/share/Red-DiscordBot
@@ -46,5 +48,9 @@ USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container
 
-COPY        ./entrypoint.sh /entrypoint.sh
-CMD         ["/bin/bash", "/entrypoint.sh"]
+STOPSIGNAL SIGINT
+
+COPY        --chown=container:container ./entrypoint.sh /entrypoint.sh
+RUN         chmod +x /entrypoint.sh
+ENTRYPOINT    ["/usr/bin/tini", "-g", "--"]
+CMD         ["/entrypoint.sh"]

@@ -26,7 +26,8 @@ RUN         dpkg --add-architecture i386 \
                 libstdc++6:i386 \
                 lib32stdc++6 \
                 libcap2 \
-                libnss-wrapper
+                libnss-wrapper \
+                tini
 
 ## Configure locale
 RUN         update-locale lang=en_US.UTF-8 \
@@ -45,6 +46,9 @@ USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container
 
-## Copy over and execute entrypoint.sh
-COPY        ./entrypoint.sh /entrypoint.sh
-CMD         [ "/bin/bash", "/entrypoint.sh" ]
+STOPSIGNAL SIGINT
+
+COPY        --chown=container:container ./entrypoint.sh /entrypoint.sh
+RUN         chmod +x /entrypoint.sh
+ENTRYPOINT    ["/usr/bin/tini", "-g", "--"]
+CMD         ["/entrypoint.sh"]

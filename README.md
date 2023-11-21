@@ -78,6 +78,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_6`
 * [`dotnet7.0`](/dotnet/7)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_7`
+* [`dotnet8.0`](/dotnet/8)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_8`
 
 ### [Elixir](/elixir)
 
@@ -240,8 +242,6 @@
 
 ### [Rust](/rust)
 
-* ['rust1.31'](/rust/1.31)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:rust_1.31`
 * ['rust1.56'](/rust/1.56)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:rust_1.56`
 * ['rust1.60'](/rust/1.60)
