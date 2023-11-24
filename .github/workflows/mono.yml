@@ -2,7 +2,7 @@ name: build mono
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 1"
+    - cron: "40 2 * * 1"
   push:
     branches:
       - master

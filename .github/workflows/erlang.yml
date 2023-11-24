@@ -2,7 +2,7 @@ name: build erlang
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 1"
+    - cron: "30 1 * * 1"
   push:
     branches:
       - master
