@@ -155,6 +155,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_17`
 * [`java19`](/java/19)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_19`
+* [`java21`](/java/21)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_21`
 
 ### [MariaDB](/mariadb)
 
@@ -168,6 +170,8 @@
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_10.6`
   * [`MariaDB 10.7`](/mariadb/10.7)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_10.7`
+  * [`MariaDB 11.2`](/mariadb/11.2)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_11.2`
 
 ### [MongoDB](/mongodb)
 
@@ -177,6 +181,8 @@
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_5`
  * [`MongoDB 6`](/mongodb/6)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_6`    
+ * [`MongoDB 7`](/mongodb/7)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_7`
 
 ### [Mono](/mono)
 
@@ -198,8 +204,9 @@
 * [`node19`](/nodejs/19)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/parkervcp/yolks:nodejs_19`
 * [`node20`](/nodejs/20)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/parkervcp/yolks:nodejs_20`
-
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_20`
+* [`node21`](/nodejs/21)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_21`
 
 ### [PostgreSQL](/postgres)
 
