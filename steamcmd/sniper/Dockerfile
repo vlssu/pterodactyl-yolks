@@ -4,7 +4,7 @@
 FROM         --platform=$TARGETOS/$TARGETARCH registry.gitlab.steamos.cloud/steamrt/sniper/platform:latest-container-runtime-depot
 
 LABEL       author="Alexander Ballauf" maintainer="admin@ballaual.de"
-LABEL       org.opencontainers.image.description SteamRT3 Platform image for Pterodactyl Source engine servers. 
+LABEL       org.opencontainers.image.description SteamRT3 Platform image for Pterodactyl Source engine servers.
 
 ## install required packages
 RUN         dpkg --add-architecture i386 \
@@ -18,7 +18,13 @@ RUN         cd /tmp/ \
             && curl -sSL https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz > rcon.tar.gz \
             && tar xvf rcon.tar.gz \
             && mv rcon-0.10.3-amd64_linux/rcon /usr/local/bin/
-            
+
+RUN 		apt-get install -y locales
+RUN 		sed -i -e 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+ENV 		LANG en_US.UTF-8
+ENV 		LANGUAGE en_US:zh_CN
+ENV 		LC_ALL en_US.UTF-8
+
 USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container
