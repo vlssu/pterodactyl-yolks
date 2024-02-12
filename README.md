@@ -142,6 +142,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.20`
 * [`go1.21`](/go/1.21)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.21`
+* [`go1.22`](/go/1.22)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.22`
 
 ### [Java](/java)
 
