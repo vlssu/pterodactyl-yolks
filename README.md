@@ -265,6 +265,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:dotnet`
 * [`SteamCMD Proton`](/steamcmd/proton)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:proton`
+* [`SteamCMD Proton`](/steamcmd/proton_8)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:proton_8`
 * [`SteamCMD Sniper latest`](/steamcmd/sniper)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:sniper`
 * [`SteamCMD Ubuntu latest LTS`](/steamcmd/ubuntu)
