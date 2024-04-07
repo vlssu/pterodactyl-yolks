@@ -1,9 +1,9 @@
-FROM        --platform=$TARGETOS/$TARGETARCH python:3.9-slim-bookworm
+FROM        --platform=$TARGETOS/$TARGETARCH dart:3.3
 
-LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
+LABEL       author="Alden Bansemer" maintainer="alden@knoban.com"
 
 RUN         apt update \
-            && apt -y install git gcc g++ ca-certificates dnsutils curl iproute2 ffmpeg procps tini \
+            && apt -y install iproute2 git ca-certificates tzdata tini \
             && useradd -m -d /home/container container
 
 USER        container

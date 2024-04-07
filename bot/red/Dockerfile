@@ -1,4 +1,4 @@
-FROM          --platform=$TARGETOS/$TARGETARCH python:3.11-slim
+FROM          --platform=$TARGETOS/$TARGETARCH python:3.11-slim-bookworm
 
 LABEL         author="Michael Parker" maintainer="parker@pterodactyl.io"
 
@@ -34,7 +34,7 @@ RUN           apt update \
                      liblzma-dev \
                      ffmpeg \
                      imagemagick \
-			              tini
+			       tini
 
 RUN           pip install --upgrade pip
 RUN           pip install python-forecastio tweepy unidecode mcstatus bs4 sqlalchemy geocoder valve python-valve py-cpuinfo psutil

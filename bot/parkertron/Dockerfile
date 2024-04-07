@@ -1,4 +1,4 @@
-FROM    --platform=$TARGETOS/$TARGETARCH debian:bullseye
+FROM    --platform=$TARGETOS/$TARGETARCH debian:bookworm
 
 LABEL   author="Michael Parker" maintainer="parker@pterodactyl.io"
 

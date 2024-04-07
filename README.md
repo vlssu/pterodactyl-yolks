@@ -65,6 +65,14 @@
 
 * [`dart2.17`](/dart/2.17)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dart_2.17`
+* [`dart2.18`](/dart/2.18)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dart_2.18`
+* [`dart2.19`](/dart/2.19)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dart_2.19`
+* [`dart3.3`](/dart/3.3)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dart_3.3`
+* [`dart stable`](/dart/stable)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dart_stable`
 
 ### [dotNet](/dotnet)
 
