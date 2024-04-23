@@ -39,6 +39,8 @@ if [ -f "/usr/local/bin/proton" ]; then
 	    mkdir -p /home/container/.steam/steam/steamapps/compatdata/${SRCDS_APPID}
         export STEAM_COMPAT_CLIENT_INSTALL_PATH="/home/container/.steam/steam"
         export STEAM_COMPAT_DATA_PATH="/home/container/.steam/steam/steamapps/compatdata/${SRCDS_APPID}"
+        # Fix for pipx with protontricks
+        export PATH=$PATH:/root/.local/bin
     else
         echo -e "----------------------------------------------------------------------------------"
         echo -e "WARNING!!! Proton needs variable SRCDS_APPID, else it will not work. Please add it"

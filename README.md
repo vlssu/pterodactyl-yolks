@@ -129,6 +129,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:samp`  
 * [`source`](/games/source)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:source`
+* [`thebattleforwesnoth`](/games/thebattleforwesnoth)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:thebattleforwesnoth`
 * [`valheim`](/games/valheim)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:valheim`
 
