@@ -184,6 +184,10 @@
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_10.7`
   * [`MariaDB 11.2`](/mariadb/11.2)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_11.2`
+  * [`MariaDB 11.3`](/mariadb/11.3)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_11.3`
+  * [`MariaDB 11.4`](/mariadb/11.4)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_11.4`
 
 ### [MongoDB](/mongodb)
 
