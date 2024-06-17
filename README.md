@@ -265,11 +265,11 @@
 
 ### [Rust](/rust)
 
-* ['rust1.56'](/rust/1.56)
+* [`rust1.56`](/rust/1.56)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:rust_1.56`
-* ['rust1.60'](/rust/1.60)
+* [`rust1.60`](/rust/1.60)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:rust_1.60`
-* ['rust latest'](/rust/latest)
+* [`rust latest`](/rust/latest)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:rust_latest`
 
 ### [SteamCMD](/steamcmd)
