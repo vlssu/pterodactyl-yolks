@@ -1,6 +1,6 @@
 FROM        --platform=$TARGETOS/$TARGETARCH debian:bullseye-slim
 
-LABEL       author="David Wolfe (Red-Thirten)" maintainer="rehlmgaming@gmail.com"
+LABEL       author="David Wolfe (Red-Thirten)" maintainer="red_thirten@yahoo.com"
 
 LABEL       org.opencontainers.image.source="https://github.com/parkervcp/yolks"
 LABEL       org.opencontainers.image.licenses=MIT

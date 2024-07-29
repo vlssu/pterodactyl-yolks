@@ -124,7 +124,9 @@
 * [`mohaa`](games/mohaa)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mohaa`  
 * [`Multi Theft Auto: San Andreas`](games/mta)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mta`    
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:mta` 
+* [`Rust (dedicated server)`](games/rust)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:rust`      
 * [`samp`](/games/samp)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:samp`  
 * [`source`](/games/source)
