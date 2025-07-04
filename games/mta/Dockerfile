@@ -1,23 +1,53 @@
 FROM  --platform=$TARGETOS/$TARGETARCH ubuntu:20.04
+ENV   DEBIAN_FRONTEND=noninteractive
 
-ENV   DEBIAN_FRONTEND noninteractive
+## update base packages
+RUN   apt update && \
+      apt upgrade -y
+
+## install dependencies
+RUN   apt install -y \
+        tini \
+        iproute2 \
+        curl \
+        git \
+        zip \
+        unzip \
+        tar \
+        xz-utils \
+        libssl1.1 \
+        apt-transport-https \
+        openssl \
+        default-libmysqlclient-dev \
+        libreadline-dev \
+        libncurses-dev \
+        libtool \
+        python3  \
+        locales \
+        ffmpeg \
+        libc6 \
+        binutils  \
+        liblua5.1-0
+
+## configure locale
+RUN   update-locale lang=en_US.UTF-8 && \
+      dpkg-reconfigure --frontend noninteractive locales
 
 ## add container user
 RUN   useradd -m -d /home/container -s /bin/bash container
 
-## update base packages
-RUN   apt update \
-        &&   apt upgrade -y
-
-## install dependencies
-RUN   apt install -y iproute2 tar libssl1.1 curl git default-libmysqlclient-dev libmysqlclient-dev libreadline-gplv2-dev libncurses5-dev libncursesw5-dev \ 
-        libtool zip unzip libncurses5 libncursesw5 python3 openssl locales ffmpeg apt-transport-https libc6 binutils xz-utils liblua5.1-0
-
-## configure locale
-RUN   update-locale lang=en_US.UTF-8 \
-        &&   dpkg-reconfigure --frontend noninteractive locales
-
+# Set up user and working directory
+USER container
+ENV USER=container HOME=/home/container
 WORKDIR /home/container
 
-COPY  ./entrypoint.sh /entrypoint.sh
-CMD   [ "/bin/bash", "/entrypoint.sh" ]
+# Set the stop signal
+STOPSIGNAL SIGINT
+
+# Copy and set up the entrypoint script
+COPY --chown=container:container ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Define entrypoint and command
+ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
+CMD ["/entrypoint.sh"]

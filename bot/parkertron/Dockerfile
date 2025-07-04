@@ -2,7 +2,7 @@ FROM    --platform=$TARGETOS/$TARGETARCH debian:bookworm
 
 LABEL   author="Michael Parker" maintainer="parker@pterodactyl.io"
 
-ENV     DEBIAN_FRONTEND noninteractive
+ENV     DEBIAN_FRONTEND=noninteractive
 
 RUN     apt update -y \
         # general packages

@@ -2,7 +2,7 @@ FROM    --platform=$TARGETOS/$TARGETARCH debian:bookworm-slim
 
 LABEL   author="Torsten Widmann" maintainer="info@goover.de"
 
-ENV     DEBIAN_FRONTEND noninteractive
+ENV     DEBIAN_FRONTEND=noninteractive
 
 RUN     dpkg --add-architecture i386 \
           && apt update \
@@ -18,7 +18,7 @@ RUN     apt update -y \
           && dpkg -i packages-microsoft-prod.deb \
           && rm packages-microsoft-prod.deb \
           && apt update -y \
-          && apt install -y aspnetcore-runtime-7.0 dotnet-sdk-7.0 libgdiplus aspnetcore-runtime-8.0 dotnet-sdk-8.0
+          && apt install -y aspnetcore-runtime-7.0 dotnet-sdk-7.0 libgdiplus aspnetcore-runtime-8.0 dotnet-sdk-8.0 aspnetcore-runtime-9.0 dotnet-sdk-9.0
 
 ## install rcon
 RUN         cd /tmp/ \

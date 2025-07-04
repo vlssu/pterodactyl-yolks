@@ -1,8 +1,18 @@
 #!/bin/bash
-cd /home/container
 
-# Make internal Docker IP address available to processes.
-export INTERNAL_IP=`ip route get 1 | awk '{print $(NF-2);exit}'`
+# Wait for the container to fully initialize
+sleep 1
+
+# Default the TZ environment variable to UTC.
+TZ=${TZ:-UTC}
+export TZ
+
+# Set environment variable that holds the Internal Docker IP
+INTERNAL_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')
+export INTERNAL_IP
+
+# Switch to the container's working directory
+cd /home/container || exit 1
 
 ## if auto_update is not set or to 1 update
 if [ -z ${AUTO_UPDATE} ] || [ "${AUTO_UPDATE}" == "1" ]; then
@@ -13,13 +23,13 @@ else
 fi
 
 # Replace Startup Variables
-MODIFIED_STARTUP=`eval echo $(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')`
+MODIFIED_STARTUP=$(eval echo -e ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
 echo ":/home/container$ ${MODIFIED_STARTUP}"
 
 if [[ "${FRAMEWORK}" == "carbon" ]]; then
-    # Carbon: https://github.com/CarbonCommunity/Carbon.Core
+    # Carbon: https://github.com/CarbonCommunity/Carbon
     echo "Updating Carbon..."
-    curl -sSL "https://github.com/CarbonCommunity/Carbon.Core/releases/download/production_build/Carbon.Linux.Release.tar.gz" | tar zx
+    curl -sSL "https://github.com/CarbonCommunity/Carbon/releases/download/production_build/Carbon.Linux.Release.tar.gz" | tar zx
     echo "Done updating Carbon!"
 
     export DOORSTOP_ENABLED=1
@@ -45,4 +55,4 @@ fi
 export LD_LIBRARY_PATH=$(pwd)/RustDedicated_Data/Plugins/x86_64:$(pwd)
 
 # Run the Server
-wrapper "${MODIFIED_STARTUP}"
+/wrapper/wrapper.js "${MODIFIED_STARTUP}"

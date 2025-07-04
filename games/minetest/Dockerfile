@@ -1,5 +1,5 @@
 FROM 		--platform=$TARGETOS/$TARGETARCH ubuntu:22.04
-ENV         DEBIAN_FRONTEND noninteractive
+ENV         DEBIAN_FRONTEND=noninteractive
 
 RUN         apt update -y \
 			&& apt install -y curl ca-certificates openssl git tar gnupg2 sqlite3 fontconfig tzdata iproute2 libfreetype6 software-properties-common \

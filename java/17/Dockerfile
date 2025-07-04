@@ -1,4 +1,4 @@
-FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:17-jdk-jammy
+FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:17-jdk-noble
 
 LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
 
@@ -20,8 +20,8 @@ RUN         apt update -y \
                 libfreetype6 \
                 tini \
 				zip \
-				unzip
-
+				unzip \
+                jq
 RUN 		apt-get install -y locales \
 			&& locale-gen zh_CN.UTF-8
 

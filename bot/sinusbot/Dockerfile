@@ -3,7 +3,7 @@ FROM        --platform=$TARGETOS/$TARGETARCH debian:bookworm-slim
 LABEL       org.opencontainers.image.authors="i2007@damw.eu"
 LABEL       version="1.0"
 
-ENV         DEBIAN_FRONTEND noninteractive
+ENV         DEBIAN_FRONTEND=noninteractive
 
 # Install Dependencies
 RUN         apt update \
@@ -14,8 +14,8 @@ RUN         apt update \
             && useradd -m -d /home/container container
 #RUN         python3 -m pip install requests
 
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 USER        container
 ENV         USER=container HOME=/home/container

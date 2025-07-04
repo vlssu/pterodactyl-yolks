@@ -51,8 +51,15 @@ jobs:
       fail-fast: false
       matrix:
         game:
-          - minetest
-          - mta
+          - altv
+          - arma3
+          - dayz                
+          - mohaa
+          - rust
+          - samp
+          - source
+          - valheim
+          - thebattleforwesnoth
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
