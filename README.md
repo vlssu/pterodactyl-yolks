@@ -203,15 +203,13 @@
 
 ### [MongoDB](/mongodb)
 
-  * [`MongoDB 4`](/mongodb/4)
-    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_4`
   * [`MongoDB 5`](/mongodb/5)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_5`
- * [`MongoDB 6`](/mongodb/6)
+  * [`MongoDB 6`](/mongodb/6)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_6`    
- * [`MongoDB 7`](/mongodb/7)
+  * [`MongoDB 7`](/mongodb/7)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_7`
- * [`MongoDB 8`](/mongodb/8)
+  * [`MongoDB 8`](/mongodb/8)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_8`
 
 ### [Mono](/mono)
