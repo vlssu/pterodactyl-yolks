@@ -88,6 +88,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_7`
 * [`dotnet8.0`](/dotnet/8)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_8`
+* [`dotnet9.0`](/dotnet/9)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_9`
 
 ### [Elixir](/elixir)
 
@@ -97,7 +99,7 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:elixir_1.13`
 * [`elixir 1.14`](/elixir/1.14)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:elixir_1.14`
-* [`elixir 1.15`](/elixir/1.12)
+* [`elixir 1.15`](/elixir/1.15)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:elixir_1.15`
 * [`elixir latest`](/elixir/latest)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:elixir_latest`
@@ -156,6 +158,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.21`
 * [`go1.22`](/go/1.22)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.22`
+* [`go1.23`](/go/1.23)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:go_1.23`
 
 ### [Java](/java)
 
@@ -171,6 +175,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_19`
 * [`java21`](/java/21)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_21`
+* [`java22`](/java/22)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_22`
 
 ### [MariaDB](/mariadb)
 
@@ -190,6 +196,10 @@
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_11.3`
   * [`MariaDB 11.4`](/mariadb/11.4)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_11.4`
+  * [`MariaDB 11.5`](/mariadb/11.5)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_11.5`
+  * [`MariaDB 11.6`](/mariadb/11.6)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mariadb_11.6`
 
 ### [MongoDB](/mongodb)
 
@@ -201,6 +211,8 @@
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_6`    
  * [`MongoDB 7`](/mongodb/7)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_7`
+ * [`MongoDB 8`](/mongodb/8)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:mongodb_8`
 
 ### [Mono](/mono)
 
@@ -225,6 +237,12 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_20`
 * [`node21`](/nodejs/21)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_21`
+* [`node22`](/nodejs/22)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_22`
+* [`node23`](/nodejs/23)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_23`
+* [`node24`](/nodejs/24)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_24`
 
 ### [PostgreSQL](/postgres)
 
@@ -255,6 +273,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.11`
 * [`python3.12`](/python/3.12)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.12`
+* [`python3.13`](/python/3.13)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.13`
 
 ### [Redis](/redis)
 
@@ -297,6 +317,10 @@
 ### [Wine](/wine)
 
 * [`Wine`](/wine)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_7`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_8`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_9`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_10`
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_latest`
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_devel`
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_staging`

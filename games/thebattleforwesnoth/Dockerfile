@@ -6,7 +6,7 @@ LABEL author="Michael Parker" maintainer="parker@pterodactyl.io"
 RUN apt update && apt upgrade -y
 
 ## install dependencies
-RUN   apt install -y gcc g++ libgcc1 libc++-dev gdb libc6 git tar zip unzip libssl-dev tini iproute2 \
+RUN   apt install -y gcc g++ libgcc1 libc++-dev gdb libc6 git tar zip unzip libssl-dev tini iproute2 \ 
       libboost-filesystem-dev libboost-iostreams-dev libboost-locale-dev libboost-random-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-coroutine-dev libboost-graph-dev \
       libsdl2-dev libcurl4-openssl-dev libcairo2-dev libvorbis-dev libbz2-dev zlib1g-dev libssl-dev libcrypto++-dev openssl cmake libsdl2-image-dev libsdl2-mixer-dev libsdl-pango-dev
 

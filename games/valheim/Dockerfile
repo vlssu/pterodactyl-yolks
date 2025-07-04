@@ -2,7 +2,7 @@ FROM  --platform=$TARGETOS/$TARGETARCH ubuntu:22.04
 
 LABEL author="Daniel Barton" maintainer="danny6167@gmail.com"
 
-ENV   DEBIAN_FRONTEND noninteractive
+ENV   DEBIAN_FRONTEND=noninteractive
 
 ## add container user
 RUN   useradd -m -d /home/container -s /bin/bash container

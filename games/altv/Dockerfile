@@ -5,7 +5,7 @@ FROM    --platform=$TARGETOS/$TARGETARCH node:16-bookworm
 
 LABEL   author="goover" maintainer="info@goover.de"
 
-ENV     DEBIAN_FRONTEND noninteractive
+ENV     DEBIAN_FRONTEND=noninteractive
 
 RUN     useradd -m -d /home/container -s /bin/bash container
 
@@ -18,7 +18,7 @@ RUN     apt update -y \
 RUN     wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
         && dpkg -i packages-microsoft-prod.deb \
         && apt update -y \
-        && apt install -y dotnet-sdk-6.0 dotnet-sdk-7.0 libgdiplus
+        && apt install -y dotnet-sdk-6.0 dotnet-sdk-7.0 dotnet-sdk-8.0 libgdiplus
 
 RUN     update-locale lang=en_US.UTF-8 \
         && dpkg-reconfigure --frontend noninteractive locales

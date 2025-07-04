@@ -5,7 +5,7 @@ FROM        --platform=$TARGETOS/$TARGETARCH mongo:6-jammy
 
 LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
 
-ENV         DEBIAN_FRONTEND noninteractive
+ENV         DEBIAN_FRONTEND=noninteractive
 
 RUN         apt update -y \
             && apt install -y netcat iproute2 \

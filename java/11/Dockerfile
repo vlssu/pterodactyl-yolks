@@ -1,4 +1,4 @@
-FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:11.0.13_8-jdk-focal
+FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:11-jdk-noble
 
 LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
 
@@ -20,10 +20,9 @@ RUN         apt update -y \
                 libfreetype6 \
                 tini \
 				zip \
-				unzip
+				unzip \
+                jq
 
-RUN 		apt-get install -y locales \
-			&& locale-gen zh_CN.UTF-8
 
 ## Setup user and working directory
 RUN         useradd -m -d /home/container -s /bin/bash container

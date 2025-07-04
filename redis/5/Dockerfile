@@ -5,7 +5,7 @@ FROM    --platform=$TARGETOS/$TARGETARCH redis:5-bullseye
 
 LABEL   author="Michael Parker" maintainer="parker@pterodactyl.io"
 
-ENV     DEBIAN_FRONTEND noninteractive
+ENV     DEBIAN_FRONTEND=noninteractive
 
 RUN     apt -y update && \
         apt -y upgrade && \
