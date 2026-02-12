@@ -127,9 +127,6 @@ mkd "$SERVER_DIR" || die "Failed to create $SERVER_DIR"
 # server jar expects start.sh to exist when using /update
 [ -f "$ROOT_DIR/start.sh" ] || touch "$ROOT_DIR/start.sh" 2>/dev/null || true
 
-INTERNAL_IP=$(ip route get 1.1.1.1 | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}')
-export INTERNAL_IP
-
 # migrate legacy layout to Server subdirectory
 migrate_layout() {
   [ -f "$ROOT_DIR/HytaleServer.jar" ] || return 0

@@ -16,7 +16,6 @@ RUN         apt update -y \
                 sqlite3 \
                 fontconfig \
                 tzdata \
-                iproute2 \
                 tini \
                 zip \
                 unzip \
