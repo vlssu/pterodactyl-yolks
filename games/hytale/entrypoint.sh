@@ -53,12 +53,13 @@ USE_COMPACT_HEADERS="${USE_COMPACT_HEADERS-1}"
 ALLOW_OP="${ALLOW_OP-0}"
 ACCEPT_EARLY_PLUGINS="${ACCEPT_EARLY_PLUGINS-0}"
 DISABLE_SENTRY="${DISABLE_SENTRY-0}"
+SKIP_MOD_VALIDATION="${SKIP_MOD_VALIDATION-0}"
 ENABLE_WORLD_BACKUP="${ENABLE_WORLD_BACKUP-1}"
 ENABLE_SERVER_BACKUP="${ENABLE_SERVER_BACKUP-1}"
 
 # normalize toggles: only "1" means enabled
 for _tv in AUTO_UPDATE HYTALE_API_AUTH USE_AOT_CACHE USE_COMPACT_HEADERS \
-           ALLOW_OP ACCEPT_EARLY_PLUGINS DISABLE_SENTRY \
+           ALLOW_OP ACCEPT_EARLY_PLUGINS DISABLE_SENTRY SKIP_MOD_VALIDATION \
            ENABLE_WORLD_BACKUP ENABLE_SERVER_BACKUP; do
   [ "${!_tv}" != 1 ] && declare "$_tv=0"
 done
@@ -302,7 +303,7 @@ _downloader_run() {
 downloader_fetch_extract() {
   local pl="$1" dir="$2" zip dl_rc retry=0
   mkd "$dir" || return 1
-  log BLUE "[update] Downloading $pl via downloader" >&2
+  log BLUE "[update] Downloading $pl via downloader"
   _downloader_run "$pl" "$dir"; dl_rc=$?
   DOWNLOADER_LAST_OUTPUT="$(tail -200 "$dir/downloader.log" 2>/dev/null || true)"
   if [ "$dl_rc" -ne 0 ] && [ -n "$DOWNLOADER_LAST_OUTPUT" ]; then
@@ -316,7 +317,7 @@ downloader_fetch_extract() {
   [ "$dl_rc" -ne 0 ] && { log RED "[update] Downloader failed (exit $dl_rc)"; return 1; }
   zip=$(ls -1t "$dir"/*.zip 2>/dev/null | head -n 1)
   [ -z "$zip" ] || [ ! -f "$zip" ] && { log RED "[update] No zip found after download"; return 1; }
-  log BLUE "[update] Extracting and installing" >&2
+  log BLUE "[update] Extracting and installing"
   unzip -o "$zip" -d "$dir" >&2 || { log RED "[update] Extraction failed"; return 1; }
   [ -d "$dir/Server" ] || { log RED "[update] Server dir not found in extracted files"; return 1; }
   echo "$dir"
@@ -460,9 +461,10 @@ else log YELLOW "[earlyplugins] ✗ Disabled"; fi
 
 if [ "$ALLOW_OP" = 1 ]; then export ALLOW_OP_FLAG="--allow-op"; else export ALLOW_OP_FLAG=""; fi
 if [ "$DISABLE_SENTRY" = 1 ]; then export DISABLE_SENTRY_FLAG="--disable-sentry"; else export DISABLE_SENTRY_FLAG=""; fi
+if [ "$SKIP_MOD_VALIDATION" = 1 ]; then export SKIP_MOD_VALIDATION_FLAG="--skip-mod-validation"; else export SKIP_MOD_VALIDATION_FLAG=""; fi
 
 if [ "$ENABLE_WORLD_BACKUP" = 1 ]; then
-  export BACKUP_FLAG="--backup --backup-dir ../${BACKUP_DIR:-Backups} --backup-frequency ${BACKUP_FREQUENCY:-30} --backup-max-count ${BACKUP_MAX_COUNT:-5}"
+  export BACKUP_FLAG="--backup --backup-dir ../${BACKUP_DIR:-Backups} --backup-frequency ${BACKUP_FREQUENCY:-30} --backup-max-count ${BACKUP_MAX_COUNT:-5} --backup-archive-max-count ${BACKUP_ARCHIVE_MAX_COUNT:-5}"
   log GREEN "[backup] ✓ Enabled"
 else export BACKUP_FLAG=""; log CYAN "[backup] Disabled"; fi
 
