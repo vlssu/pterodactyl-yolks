@@ -18,6 +18,7 @@ STARTUP_TIME=$(date +%s)
 SERVER_VERSION=${SERVER_VERSION:-latest}
 AUTO_UPDATE="${AUTO_UPDATE-1}"
 PATCHLINE=${PATCHLINE:-release}
+TRANSPORT="${TRANSPORT:-QUIC}"
 
 DOWNLOADER_URL="https://downloader.hytale.com/hytale-downloader.zip"
 DOWNLOADER_BIN="${DOWNLOADER_BIN:-$ROOT_DIR/hytale-downloader}"
@@ -112,6 +113,15 @@ valid_version() { [[ -n "$1" && "$1" =~ $VERSION_PATTERN ]]; }
 mkd() { mkdir -p "$1" || return 1; }
 has_server_jar() { [ -f "${1:-$SERVER_DIR}/HytaleServer.jar" ]; }
 has_backup() { [ -d "$PATCH_BACKUP_DIR/$1" ] && has_server_jar "$PATCH_BACKUP_DIR/$1/Server"; }
+
+TRANSPORT=$(printf '%s' "$TRANSPORT" | tr '[:lower:]' '[:upper:]')
+case "$TRANSPORT" in
+  QUIC | TCP) ;;
+  *)
+    log YELLOW "[transport] Invalid TRANSPORT '$TRANSPORT', defaulting to QUIC"
+    TRANSPORT=QUIC
+    ;;
+esac
 
 write_0600() {
   local dest="$1" dir tmp; dir=$(dirname "$dest"); mkd "$dir" || return 1
@@ -462,6 +472,7 @@ else log YELLOW "[earlyplugins] ✗ Disabled"; fi
 if [ "$ALLOW_OP" = 1 ]; then export ALLOW_OP_FLAG="--allow-op"; else export ALLOW_OP_FLAG=""; fi
 if [ "$DISABLE_SENTRY" = 1 ]; then export DISABLE_SENTRY_FLAG="--disable-sentry"; else export DISABLE_SENTRY_FLAG=""; fi
 if [ "$SKIP_MOD_VALIDATION" = 1 ]; then export SKIP_MOD_VALIDATION_FLAG="--skip-mod-validation"; else export SKIP_MOD_VALIDATION_FLAG=""; fi
+export TRANSPORT_FLAG="--transport $TRANSPORT"
 
 if [ "$ENABLE_WORLD_BACKUP" = 1 ]; then
   export BACKUP_FLAG="--backup --backup-dir ../${BACKUP_DIR:-Backups} --backup-frequency ${BACKUP_FREQUENCY:-30} --backup-max-count ${BACKUP_MAX_COUNT:-5} --backup-archive-max-count ${BACKUP_ARCHIVE_MAX_COUNT:-5}"
