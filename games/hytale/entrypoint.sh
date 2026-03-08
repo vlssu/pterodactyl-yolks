@@ -201,28 +201,15 @@ http_request() {
   [ "$mode" = mem ] && { bodyf=$(mktemp "$TMP_BASE/http.body.XXXXXX") || return 1; }
   [ "$mode" = file ] && tmp="${outfile}.tmp"
   HTTP_NEEDS_REAUTH=0
-  local curl_progress="-sS" curl_out
+  local curl_out
   [ "$mode" = mem ] && curl_out="$bodyf" || curl_out="$tmp"
-  [ "$mode" = file ] && curl_progress="--progress-bar"
   [ "$mode" = file ] && rm -f "$tmp"
-  if [ "$mode" = file ]; then
-    local code_file="$TMP_BASE/.http_code"
-    curl $curl_progress --location --proto '=https' --tlsv1.2 --request "$method" \
-      --connect-timeout "${HTTP_CONNECT_TIMEOUT:-10}" --max-time "$timeout_val" \
-      --retry "$retries" --retry-all-errors --retry-delay 2 \
-      -A "HytaleServerLauncher/1.0" \
-      -o "$curl_out" -w '%{http_code}' "$@" "$url" > "$code_file"
-    rc=$?
-    code=$(cat "$code_file" 2>/dev/null)
-    rm -f "$code_file"
-  else
-    code=$(curl $curl_progress --location --proto '=https' --tlsv1.2 --request "$method" \
-      --connect-timeout "${HTTP_CONNECT_TIMEOUT:-10}" --max-time "$timeout_val" \
-      --retry "$retries" --retry-all-errors --retry-delay 2 \
-      -A "HytaleServerLauncher/1.0" \
-      -o "$curl_out" -w "%{http_code}" "$@" "$url")
-    rc=$?
-  fi
+  code=$(curl -sS --location --proto '=https' --tlsv1.2 --request "$method" \
+    --connect-timeout "${HTTP_CONNECT_TIMEOUT:-10}" --max-time "$timeout_val" \
+    --retry "$retries" --retry-all-errors --retry-delay 2 \
+    -A "HytaleServerLauncher/1.0" \
+    -o "$curl_out" -w "%{http_code}" "$@" "$url")
+  rc=$?
   [ "$rc" -ne 0 ] && code=000
   HTTP_CODE="$code"
   [ "$mode" = mem ] && { HTTP_BODY=$(cat "$bodyf"); rm -f "$bodyf"; }
