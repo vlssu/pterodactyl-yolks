@@ -297,7 +297,8 @@ api_download() {
   # downloads, verifies, and stages the server ZIP for $API_MANIFEST_DL
   # expects api_check_version() to have been called first
   local dl_url="$API_MANIFEST_DL" sha="$API_MANIFEST_SHA"
-  local td="$TMP_BASE/api-download" zip="$td/server.zip"
+  local td="$TMP_BASE/api-download"
+  local zip="$td/server.zip"
   rm -rf "$td"; mkd "$td" || return 1
   log BLUE "[api] Downloading $API_MANIFEST_VER"
   # get signed download URL
