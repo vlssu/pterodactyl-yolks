@@ -12,7 +12,6 @@ export TZ=${TZ:-UTC}
 ROOT_DIR=/home/container
 SERVER_DIR="$ROOT_DIR/Server"
 TMP_BASE="$ROOT_DIR/.tmp"
-DOWNLOADER_LAST_OUTPUT=""
 STARTUP_TIME=$(date +%s)
 
 SERVER_VERSION=${SERVER_VERSION:-latest}
@@ -20,11 +19,7 @@ AUTO_UPDATE="${AUTO_UPDATE-1}"
 PATCHLINE=${PATCHLINE:-release}
 TRANSPORT="${TRANSPORT:-QUIC}"
 
-DOWNLOADER_URL="https://downloader.hytale.com/hytale-downloader.zip"
-DOWNLOADER_BIN="${DOWNLOADER_BIN:-$ROOT_DIR/hytale-downloader}"
-CREDENTIALS_PATH="${CREDENTIALS_PATH:-$ROOT_DIR/.hytale-downloader-credentials.json}"
-DOWNLOADER_OUTPUT_FILTER="Please visit|Path to credentials file|Authorization code:"
-
+HYTALE_ASSETS_API="https://account-data.hytale.com/game-assets"
 MAVEN_BASE_URL="https://maven.hytale.com"
 VERSION_PATTERN='^[0-9]{4}\.[0-9]{2}\.[0-9]{2}-[a-f0-9]+$'
 PATCHLINE_PATTERN='^(release|pre-release)$'
@@ -92,14 +87,10 @@ startup_abort() {
   log RED "$1"
   log YELLOW "[startup] Plan=$PLAN Patchline=$PATCHLINE Target=${TARGET:-latest}"
   case "$PLAN" in
-    downloader)
-      if ! creds_valid && [ "$HYTALE_API_AUTH" = 1 ]; then
-        log YELLOW "[startup] Downloader requires Hytale authentication. Set HYTALE_API_AUTH=1 and complete device login, or provide credentials at $CREDENTIALS_PATH."
-      elif [ -n "$DOWNLOADER_LAST_OUTPUT" ]; then
-        log YELLOW "[startup] Downloader output:"
-        printf '%s\n' "$DOWNLOADER_LAST_OUTPUT" | tail -20 | sed 's/^/  /' >&2
-      else log YELLOW "[startup] Download failed. No output captured from downloader."; fi ;;
-    maven) log YELLOW "[startup] Maven download failed. Check network access to $MAVEN_BASE_URL." ;;
+    api)
+      if [ "$HYTALE_API_AUTH" = 1 ]; then
+        log YELLOW "[startup] API download requires Hytale authentication. Set HYTALE_API_AUTH=1 and complete device login."
+      else log YELLOW "[startup] API download failed. Check network access to $HYTALE_ASSETS_API."; fi ;;
   esac
   exit 1
 }
@@ -199,18 +190,6 @@ for _qp in "receive:/proc/sys/net/core/rmem_max" "send:/proc/sys/net/core/wmem_m
   [ "$_qv" -lt "$QUIC_BUF_TARGET" ] 2>/dev/null && log YELLOW "[quic] ✗ UDP $_ql buffer low ($_qv bytes). Set $(basename "$_qf")=$QUIC_BUF_TARGET"
 done
 
-QEMU_PREFIX=""
-ARCH=$(uname -m)
-if [ "$ARCH" = aarch64 ] || [ "$ARCH" = arm64 ]; then
-  [ -x /usr/bin/qemu-x86_64-static ] && QEMU_PREFIX=/usr/bin/qemu-x86_64-static
-  [ -z "$QEMU_PREFIX" ] && [ -x /usr/bin/qemu-x86_64 ] && QEMU_PREFIX=/usr/bin/qemu-x86_64
-  [ -z "$QEMU_PREFIX" ] && log YELLOW "[arch] ARM64 detected and QEMU x86_64 not found; downloader may not run"
-fi
-
-DL_CMD=("$DOWNLOADER_BIN")
-[ -n "$QEMU_PREFIX" ] && DL_CMD=("$QEMU_PREFIX" "$DOWNLOADER_BIN")
-DOWNLOADER_ARGS=(-credentials-path "$CREDENTIALS_PATH")
-
 # http helpers: sets HTTP_CODE/HTTP_BODY/HTTP_NEEDS_REAUTH; ctx="-" skips reauth; retries on 429/5xx
 HTTP_CODE= HTTP_BODY= HTTP_NEEDS_REAUTH=0
 
@@ -222,10 +201,11 @@ http_request() {
   [ "$mode" = mem ] && { bodyf=$(mktemp "$TMP_BASE/http.body.XXXXXX") || return 1; }
   [ "$mode" = file ] && tmp="${outfile}.tmp"
   HTTP_NEEDS_REAUTH=0
-  local curl_out
+  local curl_progress="-sS" curl_out
   [ "$mode" = mem ] && curl_out="$bodyf" || curl_out="$tmp"
+  [ "$mode" = file ] && curl_progress="--progress-bar"
   [ "$mode" = file ] && rm -f "$tmp"
-  code=$(curl -sS --location --proto '=https' --tlsv1.2 --request "$method" \
+  code=$(curl $curl_progress --location --proto '=https' --tlsv1.2 --request "$method" \
     --connect-timeout "${HTTP_CONNECT_TIMEOUT:-10}" --max-time "$timeout_val" \
     --retry "$retries" --retry-all-errors --retry-delay 2 \
     -A "HytaleServerLauncher/1.0" \
@@ -263,7 +243,6 @@ http_authed() {
     if [ -n "$R_TOK" ] && ! refresh_token_known_expired; then
       if oauth_refresh; then
         auth_save
-        creds_write 2>/dev/null || true
         http api "$method" "$url" -H "Authorization: Bearer $A_TOK" "$@" >/dev/null
         [ "$HTTP_CODE" = 200 ] && return 0
       fi
@@ -274,87 +253,12 @@ http_authed() {
   [ "$HTTP_CODE" = 200 ]
 }
 
-install_downloader() {
-  log YELLOW "[installer] Installing downloader"
-  local td="$TMP_BASE/downloader"
-  rm -rf "$td"; mkd "$td" || return 1
-  http_get_file "-" "$DOWNLOADER_URL" "$td/downloader.zip" || { log RED "[installer] Download failed (HTTP $HTTP_CODE)"; rm -rf "$td"; return 1; }
-  unzip -o "$td/downloader.zip" -d "$td" >/dev/null 2>&1 || { log RED "[installer] Extraction failed"; rm -rf "$td"; return 1; }
-  [ -f "$td/hytale-downloader-linux-amd64" ] || { log RED "[installer] Binary missing"; rm -rf "$td"; return 1; }
-  cp "$td/hytale-downloader-linux-amd64" "$DOWNLOADER_BIN" && chmod +x "$DOWNLOADER_BIN" 2>/dev/null || { rm -rf "$td"; return 1; }
-  rm -rf "$td"; log GREEN "[installer] ✓ Downloader installed"
-}
-ensure_downloader() {
-  if [ -f "$DOWNLOADER_BIN" ]; then
-    if [ "$AUTO_UPDATE" = 1 ]; then
-      local out rc
-      out=$("${DL_CMD[@]}" "${DOWNLOADER_ARGS[@]}" -check-update 2>&1); rc=$?
-      [ "$rc" -ne 0 ] && log YELLOW "[installer] Downloader check failed (exit $rc)"
-      echo "$out" | grep -q "A new version is available" && { log YELLOW "[installer] Updating downloader"; install_downloader || log RED "[installer] Failed to update downloader"; }
-    fi
-    return 0
-  else install_downloader; fi
-}
-
-downloader_print_version() {
-  local pl="$1" out v
-  out=$(timeout 600 "${DL_CMD[@]}" "${DOWNLOADER_ARGS[@]}" -patchline "$pl" -print-version -skip-update-check 2>&1) || true
-  printf '%s\n' "$out" | grep -E "$DOWNLOADER_OUTPUT_FILTER" | sed "s/.*/  ${CYAN}&${NC}/" >&2 || true
-  v=$(printf '%s\n' "$out" | grep -oE '[0-9]{4}\.[0-9]{2}\.[0-9]{2}-[a-f0-9]+' | head -1)
-  printf '%s\n' "$v"
-}
-
-_downloader_run() {
-  local pl="$1" dir="$2" dl_log="$dir/downloader.log" dl_script_cmd
-  printf -v dl_script_cmd '%q ' "${DL_CMD[@]}" "${DOWNLOADER_ARGS[@]}" -patchline "$pl" -skip-update-check
-  rmq "$dir"/*.zip "$dir/Server"
-  (cd "$dir" && script -qfec "timeout ${DOWNLOADER_TIMEOUT:-3600} $dl_script_cmd" "$dl_log" >&2)
-}
-downloader_fetch_extract() {
-  local pl="$1" dir="$2" zip dl_rc retry=0
-  mkd "$dir" || return 1
-  log BLUE "[update] Downloading $pl via downloader"
-  _downloader_run "$pl" "$dir"; dl_rc=$?
-  DOWNLOADER_LAST_OUTPUT="$(tail -200 "$dir/downloader.log" 2>/dev/null || true)"
-  if [ "$dl_rc" -ne 0 ] && [ -n "$DOWNLOADER_LAST_OUTPUT" ]; then
-    if echo "$DOWNLOADER_LAST_OUTPUT" | grep -qF "checksum mismatch"; then
-      log YELLOW "[update] Checksum mismatch, retrying"; retry=1
-    elif echo "$DOWNLOADER_LAST_OUTPUT" | grep -qF "credentials were created for"; then
-      log YELLOW "[update] Credential mismatch, retrying"; rmq "$CREDENTIALS_PATH"; retry=1
-    fi
-    [ "$retry" = 1 ] && { _downloader_run "$pl" "$dir"; dl_rc=$?; DOWNLOADER_LAST_OUTPUT="$(tail -200 "$dir/downloader.log" 2>/dev/null || true)"; }
-  fi
-  [ "$dl_rc" -ne 0 ] && { log RED "[update] Downloader failed (exit $dl_rc)"; return 1; }
-  zip=$(ls -1t "$dir"/*.zip 2>/dev/null | head -n 1)
-  [ -z "$zip" ] || [ ! -f "$zip" ] && { log RED "[update] No zip found after download"; return 1; }
-  log BLUE "[update] Extracting and installing"
-  unzip -o "$zip" -d "$dir" >&2 || { log RED "[update] Extraction failed"; return 1; }
-  [ -d "$dir/Server" ] || { log RED "[update] Server dir not found in extracted files"; return 1; }
-  echo "$dir"
-}
-downloader_assets_only() {
-  local td="$TMP_BASE/assets-only" d
-  d=$(downloader_fetch_extract "$1" "$td") || { rmq "$td"; return 1; }
-  if [ ! -f "$d/Assets.zip" ]; then rmq "$td"; return 1; fi
-  cp -f "$d/Assets.zip" "$ROOT_DIR/" && log GREEN "[update] ✓ Assets installed"
-  rmq "$td"
-}
-
 maven_meta() {
-  # caches metadata per patchline to avoid repeat API calls
-  local pl="${1:-$PATCHLINE}" cache="$TMP_BASE/maven-metadata-${1:-$PATCHLINE}.xml"
-  if [ -f "$cache" ]; then
-    HTTP_CODE=200
-    cat "$cache"
-    return 0
-  fi
+  local pl="${1:-$PATCHLINE}" cache="$TMP_BASE/maven-meta-$1.xml"
+  if [ -f "$cache" ]; then HTTP_CODE=200; cat "$cache"; return 0; fi
   http "-" GET "$MAVEN_BASE_URL/$pl/com/hypixel/hytale/Server/maven-metadata.xml" -H "Accept: application/xml" >/dev/null
   [ "$HTTP_CODE" = 200 ] || return 1
   printf '%s' "$HTTP_BODY" | tee "$cache"
-}
-maven_version_exists() {
-  local m
-  m=$(maven_meta "$1") && printf '%s' "$m" | grep -Fq "<version>$2</version>"
 }
 maven_get_latest() {
   local m flat v
@@ -363,6 +267,64 @@ maven_get_latest() {
   v=$(printf '%s' "$flat" | grep -oE '<version>[[:space:]]*[^<]+' | sed -E 's/<version>[[:space:]]*//' | tail -1)
   v=$(printf '%s' "$v" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')
   [ -n "$v" ] && printf '%s' "$v"
+}
+maven_version_exists() {
+  local m
+  m=$(maven_meta "$1") || return 1
+  printf '%s' "$m" | grep -Fq "<version>$2</version>"
+}
+
+API_MANIFEST_VER= API_MANIFEST_DL= API_MANIFEST_SHA=
+
+api_check_version() {
+  # fetches the version manifest for the active patchline
+  local pl="${1:-$PATCHLINE}"
+  API_MANIFEST_VER= API_MANIFEST_DL= API_MANIFEST_SHA=
+  http_authed GET "$HYTALE_ASSETS_API/version/$pl.json" || { log RED "[api] Version check failed (HTTP $HTTP_CODE)"; return 1; }
+  local signed_url; signed_url=$(http_jq '.url // empty')
+  [ -n "$signed_url" ] || { log RED "[api] Version response missing signed URL"; return 1; }
+  http "-" GET "$signed_url" >/dev/null
+  [ "$HTTP_CODE" = 200 ] || { log RED "[api] Failed to fetch version manifest (HTTP $HTTP_CODE)"; return 1; }
+  API_MANIFEST_VER=$(http_jq '.version // empty')
+  API_MANIFEST_DL=$(http_jq '.download_url // empty')
+  API_MANIFEST_SHA=$(http_jq '.sha256 // empty')
+  [ -n "$API_MANIFEST_VER" ] || { log RED "[api] Version manifest missing version field"; return 1; }
+  [ -n "$API_MANIFEST_DL" ] || { log RED "[api] Version manifest missing download_url field"; return 1; }
+  log CYAN "[api] Remote version: $API_MANIFEST_VER"
+}
+
+api_download() {
+  # downloads, verifies, and stages the server ZIP for $API_MANIFEST_DL
+  # expects api_check_version() to have been called first
+  local dl_url="$API_MANIFEST_DL" sha="$API_MANIFEST_SHA"
+  local td="$TMP_BASE/api-download" zip="$td/server.zip"
+  rm -rf "$td"; mkd "$td" || return 1
+  log BLUE "[api] Downloading $API_MANIFEST_VER"
+  # get signed download URL
+  http_authed GET "$HYTALE_ASSETS_API/$dl_url" || { log RED "[api] Download URL request failed (HTTP $HTTP_CODE)"; rmq "$td"; return 1; }
+  local signed_dl; signed_dl=$(http_jq '.url // empty')
+  [ -n "$signed_dl" ] || { log RED "[api] Download response missing signed URL"; rmq "$td"; return 1; }
+  # download the ZIP from signed URL
+  http_get_file "-" "$signed_dl" "$zip" || { log RED "[api] ZIP download failed (HTTP $HTTP_CODE)"; rmq "$td"; return 1; }
+  # SHA-256 verify
+  if [ -n "$sha" ]; then
+    local actual; actual=$(sha256sum "$zip" | awk '{print $1}')
+    if [ "$actual" != "$sha" ]; then
+      log RED "[api] SHA-256 mismatch: expected $sha, got $actual"
+      rmq "$td"; return 1
+    fi
+    log GREEN "[api] ✓ SHA-256 verified"
+  else log YELLOW "[api] Warning: no SHA-256 in manifest, skipping verification"; fi
+  # extract
+  log BLUE "[api] Extracting"
+  unzip -o "$zip" -d "$td" >&2 || { log RED "[api] Extraction failed"; rmq "$td"; return 1; }
+  [ -d "$td/Server" ] || { log RED "[api] Server dir not found in extracted files"; rmq "$td"; return 1; }
+  # install
+  backup_current ""
+  install_extract "$td" || { rmq "$td"; return 1; }
+  rmq "$td"
+  local nv; nv=$(save_meta 2>/dev/null || true)
+  [ -n "$nv" ] && log GREEN "[api] ✓ Updated to $nv" || log GREEN "[api] ✓ Updated"
 }
 backup_current() {
   [ "$ENABLE_SERVER_BACKUP" = 1 ] || { log CYAN "[backup] Server backup disabled (ENABLE_SERVER_BACKUP=0)"; return 0; }
@@ -500,7 +462,7 @@ fmt_exp() {
 auth_clear() {
   A_TOK= R_TOK= S_TOK= I_TOK=; A_EXP=0 R_EXP=0 S_EXP=0
   P_UUID="${HYTALE_PROFILE_UUID:-}"; P_NAME=
-  rmq "$HYTALE_AUTH_STATE_PATH" "$CREDENTIALS_PATH"
+  rmq "$HYTALE_AUTH_STATE_PATH"
 }
 auth_load() {
   [ -f "$HYTALE_AUTH_STATE_PATH" ] || return 1
@@ -520,28 +482,6 @@ auth_save() {
     --arg pu "${P_UUID:-}" --arg pn "${P_NAME:-}" \
     '{refresh_token:$rt,access_token:$at,access_expires:$ae,refresh_expires:$re,sessionToken:$st,identityToken:$it,session_expires:$se,profile_uuid:$pu,profile_name:$pn}' \
     | write_0600 "$HYTALE_AUTH_STATE_PATH" || true
-}
-creds_load() {
-  [ -f "$CREDENTIALS_PATH" ] || return 1
-  chmod 600 "$CREDENTIALS_PATH" 2>/dev/null || true
-  local tsv rt at ea
-  tsv=$(jq -r '[.refresh_token//"", .access_token//"", .expires_at//0] | @tsv' "$CREDENTIALS_PATH" 2>/dev/null) || return 1
-  IFS=$'\t' read -r rt at ea <<<"$tsv"
-  [[ "$ea" =~ ^[0-9]+$ ]] || ea=0
-  [ -n "$rt" ] && R_TOK="$rt"; [ -n "$at" ] && A_TOK="$at"; A_EXP="$ea"
-  [ -n "$R_TOK" ]
-}
-creds_valid() {
-  creds_load || return 1; [ -n "$A_TOK" ] || return 1
-  [ "$A_EXP" -gt "$(($(date +%s) + 60))" ] 2>/dev/null
-}
-creds_write() {
-  [ -n "$A_TOK" ] && [ -n "$R_TOK" ] || return 1
-  local ea
-  ea=${A_EXP:-0}
-  [[ "$ea" =~ ^[0-9]+$ ]] || ea=0
-  jq -n --arg at "$A_TOK" --arg rt "$R_TOK" --argjson ea "$ea" '{access_token:$at,refresh_token:$rt,expires_at:$ea}' \
-    | write_0600 "$CREDENTIALS_PATH" || return 1
 }
 
 urlencode() { jq -rn --arg v "$1" '$v|@uri'; }
@@ -682,25 +622,6 @@ session_cleanup() {
   S_TOK= I_TOK= S_EXP=0; auth_save
 }
 
-_cw() { creds_write && { log GREEN "[auth] ✓ $1"; return 0; }; log RED "[auth] Failed to write credentials file"; return 1; }
-ensure_creds() {
-  # valid credentials file -> load and refresh existing state -> device flow
-  creds_valid && { log GREEN "[auth] ✓ Credentials file valid"; return 0; }
-  auth_load || creds_load || true
-  if [ -n "$R_TOK" ]; then
-    if ! token_expired "$A_EXP" 60; then _cw "Credentials written" && return 0; fi
-    log BLUE "[auth] Refreshing OAuth token"
-    if _try_refresh; then auth_save; _cw "Credentials refreshed" && return 0; fi
-  fi
-  if [ "$HYTALE_API_AUTH" = 1 ]; then
-    log BLUE "[auth] Starting OAuth device flow"
-    if oauth_ensure; then auth_save; _cw "Credentials acquired" && return 0; fi
-    log RED "[auth] OAuth device flow failed"
-  fi
-  [ "$1" = 1 ] && { log RED "[auth] Required credentials not obtained"; return 1; }
-  return 0
-}
-
 LOCAL_VER=$(trim_file "$SERVER_DIR/.version" 2>/dev/null || echo "")
 LOCAL_PL=$(trim_file "$SERVER_DIR/.patchline" 2>/dev/null || echo "")
 PATCH_BACKUP_DIR="$BACKUP_BASE/$PATCHLINE"
@@ -709,55 +630,44 @@ log CYAN "Current version : ${LOCAL_VER:-none} (${LOCAL_PL:-unknown})"
 log CYAN "Active patchline: $PATCHLINE"
 log CYAN "Requested build : $SERVER_VERSION"
 
-PLAN=none TARGET= SRC= ENSURE_ASSETS=0 REQUIRE_CREDS=0
+PLAN=none TARGET= SRC=
 
 _plan_ver() {
-  # local > backup > preferred source
-  local ver="$1" prefer_downloader="${2:-0}"
+  # local > backup > api
+  local ver="$1"
   [ -z "$ver" ] && return 1
   if [ "$LOCAL_VER" = "$ver" ] && { [ "$LOCAL_PL" = "$PATCHLINE" ] || [ -z "$LOCAL_PL" ]; }; then PLAN=none; return 0; fi
   if [ "$LOCAL_VER" = "$ver" ] && [ "$LOCAL_PL" != "$PATCHLINE" ]; then PLAN=patchline; TARGET="$ver"; return 0; fi
   if has_backup "$ver"; then PLAN=backup; SRC="$PATCH_BACKUP_DIR/$ver"; TARGET="$ver"; return 0; fi
-  if [ "$prefer_downloader" = 1 ]; then
-    PLAN=downloader; TARGET="$ver"; REQUIRE_CREDS=1; return 0
-  fi
-  if maven_version_exists "$PATCHLINE" "$ver"; then
-    PLAN=maven; TARGET="$ver"; ENSURE_ASSETS=1; return 0
-  fi
-  PLAN=downloader; TARGET="$ver"; REQUIRE_CREDS=1; return 0
+  PLAN=api; TARGET="$ver"; return 0
 }
 
-# latest: staged > backup > downloader
-# explicit version: staged > backup > maven > downloader
-# Sets PLAN (none|patchline|backup|maven|downloader), TARGET, SRC, REQUIRE_CREDS, ENSURE_ASSETS.
+# latest: staged > backup > api
+# explicit version: staged > backup > api
+# sets PLAN (none|patchline|backup|api), TARGET, SRC
 plan() {
-  PLAN=none TARGET= SRC= ENSURE_ASSETS=0 REQUIRE_CREDS=0
+  PLAN=none TARGET= SRC=
   [ "$STAGED" = 1 ] && { log GREEN "[update] ✓ Staged update applied, skipping download check"; return; }
   local needs=0
   has_server_jar || needs=1
   case "$SERVER_VERSION" in
     latest)
       if [ "$AUTO_UPDATE" != 1 ]; then
-        [ "$needs" = 1 ] && { PLAN=downloader; REQUIRE_CREDS=1; return; }
+        [ "$needs" = 1 ] && { PLAN=api; return; }
         if [ -n "$LOCAL_PL" ] && [ "$LOCAL_PL" != "$PATCHLINE" ]; then
           local lb; lb=$(find_backup "$PATCH_BACKUP_DIR")
           [ -n "$lb" ] && has_server_jar "$lb/Server" && { PLAN=backup; SRC="$lb"; TARGET=$(basename "$lb"); return; }
-          PLAN=downloader; REQUIRE_CREDS=1; return
+          PLAN=api; return
         fi
         log GREEN "[update] ✓ Server files present"; log CYAN "[update] Updates disabled (AUTO_UPDATE=0)"; return
       fi
       [ -n "$LOCAL_PL" ] && [ "$LOCAL_PL" != "$PATCHLINE" ] && { [ ! -d "$PATCH_BACKUP_DIR" ] || [ -z "$(ls -A "$PATCH_BACKUP_DIR" 2>/dev/null)" ]; } && needs=1
+      # check remote version via Maven
       local maven_latest; maven_latest=$(maven_get_latest "$PATCHLINE" 2>/dev/null || echo "")
-      [ -n "$maven_latest" ] && { _plan_ver "$maven_latest" 1; return; }
-      [ "$needs" = 1 ] && { PLAN=downloader; REQUIRE_CREDS=1; return; }
-      if creds_valid; then
-        log YELLOW "[update] Maven latest check failed, falling back to downloader"
-        local remote; remote=$(downloader_print_version "$PATCHLINE")
-        [ -n "$remote" ] && ! maven_version_exists "$PATCHLINE" "$remote" && { log YELLOW "[update] Downloader reported $remote but not available on $PATCHLINE patchline"; remote=; }
-        [ -n "$remote" ] && { _plan_ver "$remote" 1; return; }
-        log YELLOW "[update] No valid version found for $PATCHLINE patchline"; PLAN=none; return
-      fi
-      log YELLOW "[update] Maven latest check failed and no valid credentials, skipping version check"; PLAN=none; return
+      [ -n "$maven_latest" ] && { _plan_ver "$maven_latest"; return; }
+      [ "$needs" = 1 ] && { PLAN=api; return; }
+      has_server_jar && { log YELLOW "[update] Maven version check failed, running existing server"; PLAN=none; return; }
+      PLAN=api; return
       ;;
     previous)
       local pb; pb=$(find_backup "$PATCH_BACKUP_DIR" "$LOCAL_VER") || pb=
@@ -774,16 +684,28 @@ plan() {
       TARGET="$SERVER_VERSION"
       [ "$LOCAL_VER" = "$TARGET" ] && has_server_jar && { log GREEN "[update] ✓ Already running $TARGET"; PLAN=none; return; }
       has_backup "$TARGET" && { log CYAN "[backup] Found $TARGET in backups"; PLAN=backup; SRC="$PATCH_BACKUP_DIR/$TARGET"; return; }
-      local maven_latest; maven_latest=$(maven_get_latest "$PATCHLINE" 2>/dev/null || echo "")
-      [ -n "$maven_latest" ] && [ "$maven_latest" = "$TARGET" ] && { log CYAN "[update] $TARGET is latest on $PATCHLINE, using downloader"; PLAN=downloader; REQUIRE_CREDS=1; return; }
-      maven_version_exists "$PATCHLINE" "$TARGET" && { log CYAN "[update] Found $TARGET on Maven ($PATCHLINE)"; PLAN=maven; ENSURE_ASSETS=1; return; }
-      local mvn_code="$HTTP_CODE"
-      if [ "$mvn_code" = 000 ] || [[ "$mvn_code" =~ ^5[0-9][0-9]$ ]]; then
-        log RED "[update] Cannot verify version $TARGET (network error, HTTP $mvn_code)"; die "STARTUP ABORTED: Cannot verify version availability"
+      # verify version exists and is downloadable
+      if ! maven_version_exists "$PATCHLINE" "$TARGET"; then
+        local mvn_code="$HTTP_CODE"
+        if [ "$mvn_code" = 000 ] || [[ "$mvn_code" =~ ^5[0-9][0-9]$ ]]; then
+          log YELLOW "[update] Cannot verify version $TARGET (network error, HTTP $mvn_code), trying API"
+          PLAN=api; return
+        fi
+        log RED "[update] Version $TARGET not found on $PATCHLINE patchline"
+        log_block YELLOW "[update] Check a different patchline (e.g., pre-release)" "[update] Use SERVER_VERSION=latest for newest"
+        has_server_jar && { log YELLOW "[update] Running existing server files"; PLAN=none; return; }
+        die "STARTUP ABORTED: Version $TARGET not available and no server files exist"
       fi
-      log RED "[update] Version $TARGET not available on $PATCHLINE patchline"
-      log_block YELLOW "[update] Check a different patchline (e.g., pre-release)" "[update] Downloader can only fetch latest" "[update] Use SERVER_VERSION=latest for newest"
-      die "STARTUP ABORTED: Explicit version $TARGET not available"
+      local maven_latest; maven_latest=$(maven_get_latest "$PATCHLINE" 2>/dev/null || echo "")
+      if [ -n "$maven_latest" ] && [ "$maven_latest" != "$TARGET" ]; then
+        log YELLOW "[update] Version $TARGET exists but is not the latest ($maven_latest)"
+        log_block YELLOW "[update] The API can only download the latest version" \
+          "[update] Use SERVER_VERSION=latest to get $maven_latest" \
+          "[update] Or restore from backups with SERVER_VERSION=previous"
+        has_server_jar && { log YELLOW "[update] Running existing server files"; PLAN=none; return; }
+        die "STARTUP ABORTED: Version $TARGET is not downloadable and no server files exist"
+      fi
+      log CYAN "[update] $TARGET is the latest on $PATCHLINE"; PLAN=api; return
       ;;
   esac
 }
@@ -802,38 +724,26 @@ apply_plan() {
       v=$(save_meta 2>/dev/null || true)
       [ -z "$v" ] && [ -n "$TARGET" ] && printf '%s' "$TARGET" >"$SERVER_DIR/.version"
       log GREEN "[backup] ✓ Restored" ;;
-    maven)
-      log BLUE "[update] Downloading server $TARGET from Maven"; backup_current ""
-      if ! http_get_file "-" "$MAVEN_BASE_URL/$PATCHLINE/com/hypixel/hytale/Server/$TARGET/Server-$TARGET.jar" "$SERVER_DIR/HytaleServer.jar"; then
-        log YELLOW "[update] Maven download failed, falling back to downloader"; PLAN=downloader; REQUIRE_CREDS=1; apply_plan; return $?
-      fi
-      v=$(save_meta 2>/dev/null || true); [ -z "$v" ] && printf '%s' "$TARGET" >"$SERVER_DIR/.version"
-      log GREEN "[update] ✓ Downloaded server $TARGET"
-      if [ "$ENSURE_ASSETS" = 1 ] && [ ! -f "$ROOT_DIR/Assets.zip" ]; then
-        log BLUE "[update] Downloading assets via downloader"
-        ensure_downloader || true; ensure_creds 0 && downloader_assets_only "$PATCHLINE" || log YELLOW "[update] Warning: Assets download failed"
-      fi ;;
-    downloader)
-      ensure_downloader || return 1; ensure_creds "$REQUIRE_CREDS"
-      if ! creds_valid; then
+    api)
+      auth_load 2>/dev/null || true
+      if ! oauth_ensure; then
         has_server_jar && { log YELLOW "[auth] Auth failed, running existing server"; PLAN=none; return 0; }
         log RED "[auth] Authentication required for download"; return 1
       fi
-      local dl="$TMP_BASE/hytale-download" d dl_ver dl_pl
-      d=$(downloader_fetch_extract "$PATCHLINE" "$dl") || {
-        rmq "$dl"; has_server_jar && { log YELLOW "[update] Download failed, falling back to existing server"; return 0; }; return 1
-      }
-      has_server_jar "$d/Server" && { parse_manifest "$d/Server/HytaleServer.jar"; dl_ver="$JAR_VERSION"; dl_pl="$JAR_PATCHLINE"; }
-      [ -n "$TARGET" ] && [ "$SERVER_VERSION" != "latest" ] && [ "$dl_ver" != "$TARGET" ] && { log RED "[update] Downloaded $dl_ver != requested $TARGET"; rmq "$dl"; return 1; }
-      if [ -n "$dl_ver" ] && [ "$dl_ver" = "$LOCAL_VER" ] && { [ "$dl_pl" = "$LOCAL_PL" ] || [ -z "$LOCAL_PL" ]; }; then
-        log GREEN "[update] ✓ Already running latest $dl_ver"
-        [ -n "$dl_pl" ] && [ -z "$LOCAL_PL" ] && printf '%s' "$dl_pl" >"$SERVER_DIR/.patchline"
-        rmq "$dl"; return 0
+      auth_save
+      if [ -z "$API_MANIFEST_DL" ]; then
+        api_check_version || {
+          has_server_jar && { log YELLOW "[update] API check failed, running existing server"; return 0; }; return 1
+        }
       fi
-      backup_current ""
-      install_extract "$d" || { rmq "$dl"; has_server_jar && { log YELLOW "[update] Extraction failed, falling back to existing server"; return 0; }; return 1; }
-      rmq "$dl"; v=$(save_meta 2>/dev/null || true)
-      [ -n "$v" ] && log GREEN "[update] ✓ Updated to $v" || log GREEN "[update] ✓ Updated" ;;
+      # skip download if API serves a different version than expected
+      if [ -n "$TARGET" ] && [ -n "$API_MANIFEST_VER" ] && [ "$API_MANIFEST_VER" != "$TARGET" ]; then
+        log YELLOW "[update] API serves $API_MANIFEST_VER, expected $TARGET — skipping download"
+        has_server_jar && { PLAN=none; return 0; }
+      fi
+      api_download || {
+        has_server_jar && { log YELLOW "[update] Download failed, running existing server"; return 0; }; return 1
+      } ;;
     *) log RED "[update] Internal error: unknown PLAN=$PLAN"; return 1 ;;
   esac
 }
@@ -841,7 +751,6 @@ apply_plan() {
 plan
 if [ "$PLAN" != none ]; then
   _pm="[update] Plan: $PLAN"; [ -n "$TARGET" ] && _pm="$_pm (target $TARGET)"
-  [ "$REQUIRE_CREDS" = 1 ] && _pm="$_pm [auth required]"; [ "$ENSURE_ASSETS" = 1 ] && _pm="$_pm [assets]"
   log CYAN "$_pm"
 fi
 apply_plan || startup_abort "STARTUP ABORTED: Failed to prepare server files"
@@ -856,12 +765,12 @@ else
 fi
 
 if [ "$HYTALE_API_AUTH" = 1 ]; then
-  auth_load || creds_load || true; log CYAN "[auth] Preparing server authentication"
+  auth_load || true; log CYAN "[auth] Preparing server authentication"
   if oauth_ensure && session_ensure; then
     export HYTALE_SERVER_SESSION_TOKEN="$S_TOK" HYTALE_SERVER_IDENTITY_TOKEN="$I_TOK"
     export HYTALE_SERVER_OAUTH_ACCESS_TOKEN="$A_TOK" HYTALE_SERVER_OAUTH_REFRESH_TOKEN="$R_TOK" HYTALE_SERVER_OAUTH_ACCESS_EXPIRES="$A_EXP"
     export HYTALE_PROFILE_UUID="${P_UUID:-}" HYTALE_PROFILE_NAME="${P_NAME:-}"
-    auth_save; creds_write || true
+    auth_save
     log GREEN "[auth] ✓ Tokens ready (access $(fmt_exp "$A_EXP"), session $(fmt_exp "$S_EXP"), refresh $(fmt_exp "$R_EXP"))"
   else
     S_TOK= I_TOK= S_EXP=0

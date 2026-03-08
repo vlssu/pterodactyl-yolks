@@ -4,26 +4,17 @@ LABEL       org.opencontainers.image.authors="Michael Parker <parker@pelican.dev
             org.opencontainers.image.source="https://github.com/pelican-eggs/yolks" \
             org.opencontainers.image.licenses=MIT
 
-ARG         TARGETARCH
 RUN         apt update -y \
             && apt install -y \
                 curl \
-                lsof \
                 ca-certificates \
-                openssl \
-                git \
-                tar \
-                sqlite3 \
                 fontconfig \
                 tzdata \
                 tini \
-                zip \
                 unzip \
                 jq \
-                dbus \
-                file \
                 gettext-base \
-                $([ "$TARGETARCH" = "arm64" ] && echo "qemu-user-static") \
+                dbus \
             && apt clean \
             && rm -rf /var/lib/apt/lists/*
 
