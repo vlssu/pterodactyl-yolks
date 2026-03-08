@@ -205,12 +205,24 @@ http_request() {
   [ "$mode" = mem ] && curl_out="$bodyf" || curl_out="$tmp"
   [ "$mode" = file ] && curl_progress="--progress-bar"
   [ "$mode" = file ] && rm -f "$tmp"
-  code=$(curl $curl_progress --location --proto '=https' --tlsv1.2 --request "$method" \
-    --connect-timeout "${HTTP_CONNECT_TIMEOUT:-10}" --max-time "$timeout_val" \
-    --retry "$retries" --retry-all-errors --retry-delay 2 \
-    -A "HytaleServerLauncher/1.0" \
-    -o "$curl_out" -w "%{http_code}" "$@" "$url")
-  rc=$?
+  if [ "$mode" = file ]; then
+    local code_file="$TMP_BASE/.http_code"
+    curl $curl_progress --location --proto '=https' --tlsv1.2 --request "$method" \
+      --connect-timeout "${HTTP_CONNECT_TIMEOUT:-10}" --max-time "$timeout_val" \
+      --retry "$retries" --retry-all-errors --retry-delay 2 \
+      -A "HytaleServerLauncher/1.0" \
+      -o "$curl_out" -w '%{http_code}' "$@" "$url" > "$code_file"
+    rc=$?
+    code=$(cat "$code_file" 2>/dev/null)
+    rm -f "$code_file"
+  else
+    code=$(curl $curl_progress --location --proto '=https' --tlsv1.2 --request "$method" \
+      --connect-timeout "${HTTP_CONNECT_TIMEOUT:-10}" --max-time "$timeout_val" \
+      --retry "$retries" --retry-all-errors --retry-delay 2 \
+      -A "HytaleServerLauncher/1.0" \
+      -o "$curl_out" -w "%{http_code}" "$@" "$url")
+    rc=$?
+  fi
   [ "$rc" -ne 0 ] && code=000
   HTTP_CODE="$code"
   [ "$mode" = mem ] && { HTTP_BODY=$(cat "$bodyf"); rm -f "$bodyf"; }
@@ -254,7 +266,8 @@ http_authed() {
 }
 
 maven_meta() {
-  local pl="${1:-$PATCHLINE}" cache="$TMP_BASE/maven-meta-$1.xml"
+  local pl="${1:-$PATCHLINE}"
+  local cache="$TMP_BASE/maven-meta-$pl.xml"
   if [ -f "$cache" ]; then HTTP_CODE=200; cat "$cache"; return 0; fi
   http "-" GET "$MAVEN_BASE_URL/$pl/com/hypixel/hytale/Server/maven-metadata.xml" -H "Accept: application/xml" >/dev/null
   [ "$HTTP_CODE" = 200 ] || return 1
