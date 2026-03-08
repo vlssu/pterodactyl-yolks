@@ -860,6 +860,7 @@ if [ "$HYTALE_API_AUTH" = 1 ]; then
   if oauth_ensure && session_ensure; then
     export HYTALE_SERVER_SESSION_TOKEN="$S_TOK" HYTALE_SERVER_IDENTITY_TOKEN="$I_TOK"
     export HYTALE_SERVER_OAUTH_ACCESS_TOKEN="$A_TOK" HYTALE_SERVER_OAUTH_REFRESH_TOKEN="$R_TOK" HYTALE_SERVER_OAUTH_ACCESS_EXPIRES="$A_EXP"
+    export HYTALE_PROFILE_UUID="${P_UUID:-}" HYTALE_PROFILE_NAME="${P_NAME:-}"
     auth_save; creds_write || true
     log GREEN "[auth] ✓ Tokens ready (access $(fmt_exp "$A_EXP"), session $(fmt_exp "$S_EXP"), refresh $(fmt_exp "$R_EXP"))"
   else
