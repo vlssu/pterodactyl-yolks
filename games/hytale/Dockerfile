@@ -15,6 +15,13 @@ RUN         apt update -y \
                 jq \
                 gettext-base \
                 dbus \
+                tar \
+                zip \
+                sqlite3 \
+                git \
+                openssl \
+                lsof \
+                file \
             && apt clean \
             && rm -rf /var/lib/apt/lists/*
 
