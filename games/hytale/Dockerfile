@@ -12,8 +12,6 @@ RUN         apt update -y \
                 tzdata \
                 tini \
                 unzip \
-                jq \
-                gettext-base \
                 dbus \
                 tar \
                 zip \
@@ -22,6 +20,8 @@ RUN         apt update -y \
                 openssl \
                 lsof \
                 file \
+                python3-minimal \
+                python3-requests \
             && apt clean \
             && rm -rf /var/lib/apt/lists/*
 
@@ -41,7 +41,7 @@ WORKDIR     /home/container
 
 STOPSIGNAL SIGINT
 
-COPY        --chown=container:container ./entrypoint.sh /entrypoint.sh
-RUN         chmod +x /entrypoint.sh
+COPY        --chown=container:container ./entrypoint.py /entrypoint.py
+RUN         chmod +x /entrypoint.py
 ENTRYPOINT    ["/usr/bin/tini", "-g", "--"]
-CMD         ["/entrypoint.sh"]
+CMD         ["/entrypoint.py"]
