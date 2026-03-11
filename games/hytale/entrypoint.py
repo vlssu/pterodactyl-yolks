@@ -291,6 +291,7 @@ def parse_jar_version(jar_path):
 
 def backup_current_version(server_dir, backup_base, patchline, retention):
     if not FLAGS['server_backup']:
+        log(C['C'], "[backup] Server backup disabled (ENABLE_SERVER_BACKUP=0)")
         return
     version_file = server_dir / VERSION_FILE
     if not version_file.exists() or not (server_dir / "HytaleServer.jar").exists():
@@ -312,6 +313,7 @@ def backup_current_version(server_dir, backup_base, patchline, retention):
         old_backups = backups[:-retention] if retention > 0 else backups
         for old in old_backups:
             shutil.rmtree(old, ignore_errors=True)
+    log(C['G'], f"[backup] ✓ .server-backups/{patchline}/{version}/ (retention: {retention})")
 
 def restore_from_backup(backup_dir, server_dir):
     if not (backup_dir / "HytaleServer.jar").exists():
