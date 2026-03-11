@@ -621,6 +621,7 @@ def main():
         patchline_file.write_text(PATCHLINE)
         log(C['G'], "[update] ✓ Patchline updated")
     elif plan == UpdatePlan.BACKUP:
+        log(C['B'], f"[backup] Restoring {target or 'version'} from backup")
         backup_current_version(SERVER_DIR, BACKUP_BASE, local_patchline, SERVER_BACKUP_RETENTION)
         if restore_from_backup(backup_path, SERVER_DIR):
             v, p = parse_jar_version(SERVER_JAR)
@@ -629,6 +630,10 @@ def main():
             if p:
                 patchline_file.write_text(p)
             log(C['G'], "[backup] ✓ Restored")
+        elif not SERVER_JAR.exists():
+            die(f"[backup] Restore failed and no server files exist")
+        else:
+            log(C['Y'], "[backup] Restore failed, running existing server")
     elif plan == UpdatePlan.API:
         auth_mgr = AuthManager(session, HYTALE_AUTH_STATE_PATH)
         if auth_mgr.ensure_authenticated():
