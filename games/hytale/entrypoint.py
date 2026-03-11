@@ -596,9 +596,9 @@ def main():
         if p:
             local_patchline = p
             patchline_file.write_text(p)
-    log(C['C'], f"Current: {local_version or 'none'} ({local_patchline or 'unknown'})")
-    log(C['C'], f"Patchline: {PATCHLINE}")
-    log(C['C'], f"Requested: {SERVER_VERSION}")
+    log(C['C'], f"Current version : {local_version or 'none'} ({local_patchline or 'unknown'})")
+    log(C['C'], f"Active patchline: {PATCHLINE}")
+    log(C['C'], f"Requested build : {SERVER_VERSION}")
     # Create HTTP session
     session = requests.Session()
     retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
@@ -714,6 +714,10 @@ def main():
         # Insert: [before -jar] + jvm_flags + [-jar jarfile.jar] + server_flags + [rest]
         cmd = cmd[:jar_flag_idx] + jvm_flags + cmd[jar_flag_idx:jar_idx+1] + server_flags + cmd[jar_idx+1:]
     os.chdir(SERVER_DIR)
+    # Final version confirmation before launch
+    final_version = version_file.read_text().strip() if version_file.exists() else "unknown"
+    final_patchline = patchline_file.read_text().strip() if patchline_file.exists() else "unknown"
+    log(C['G'], f"[startup] Launching: {final_version} ({final_patchline})")
     log(C['G'], f"[startup] ✓ Ready in {int(time.time() - start_time)}s")
     log(C['C'], f"[startup] Command: {' '.join(cmd) if isinstance(cmd, list) else cmd}")
     for sig in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP, signal.SIGQUIT):
