@@ -295,9 +295,11 @@ def backup_current_version(server_dir, backup_base, patchline, retention):
         return
     version_file = server_dir / VERSION_FILE
     if not version_file.exists() or not (server_dir / "HytaleServer.jar").exists():
+        log(C['C'], "[backup] Skipped (no existing server files)")
         return
     version = version_file.read_text().strip()
     if not re.match(VERSION_PATTERN, version):
+        log(C['C'], "[backup] Skipped (invalid version)")
         return
     backup_dir = backup_base / patchline / version
     backup_dir.mkdir(parents=True, exist_ok=True)
