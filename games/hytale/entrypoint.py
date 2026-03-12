@@ -360,11 +360,16 @@ def apply_staged_update():
     if not (jar := ROOT_DIR / "updater" / "staging" / "Server" / "HytaleServer.jar").exists():
         return False
     log(C['B'], "[update] Applying staged update")
-    backup_current_version(SERVER_DIR, BACKUP_BASE, PATCHLINE, SERVER_BACKUP_RETENTION)
+    old_patchline = (SERVER_DIR / PATCHLINE_FILE).read_text().strip() if (SERVER_DIR / PATCHLINE_FILE).exists() else PATCHLINE
+    backup_current_version(SERVER_DIR, BACKUP_BASE, old_patchline, SERVER_BACKUP_RETENTION)
     if install_from_extract(ROOT_DIR / "updater" / "staging", SERVER_DIR):
         shutil.rmtree(ROOT_DIR / "updater", ignore_errors=True)
-        if (v := parse_jar_version(SERVER_JAR)[0]):
+        v, p = parse_jar_version(SERVER_JAR)
+        if v:
+            (SERVER_DIR / VERSION_FILE).write_text(v)
             log(C['G'], f"[update] ✓ Applied {v}")
+        if p:
+            (SERVER_DIR / PATCHLINE_FILE).write_text(p)
         return True
     return False
 
