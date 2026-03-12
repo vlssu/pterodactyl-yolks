@@ -144,6 +144,11 @@ class AuthManager:
                 log(C['G'], f"[auth] ✓ Token refreshed (expires in {expires_in_min}m)")
                 return True
             log(C['Y'], f"[auth] Refresh failed (HTTP {resp.status_code})")
+            if resp.status_code == 400:
+                with suppress(Exception):
+                    error = resp.json().get('error', '')
+                    if error in ('invalid_grant', 'invalid_client', 'unauthorized_client'):
+                        self.state_path.unlink()
         except Exception as e:
             log(C['Y'], f"[auth] Refresh error: {e}")
         return False
