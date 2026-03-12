@@ -325,13 +325,19 @@ def backup_current_version(server_dir, backup_base, patchline, retention):
 def restore_from_backup(backup_dir, server_dir):
     backup_server_dir = backup_dir / "Server"
     if not (backup_server_dir / "HytaleServer.jar").exists():
+        log(C['Y'], f"[backup] Restore failed: {backup_server_dir / 'HytaleServer.jar'} not found")
         return False
+    log(C['C'], f"[backup] Restoring from {backup_dir}")
+    (server_dir / "HytaleServer.aot").unlink(missing_ok=True)
     for f in BACKUP_SERVER_FILES:
         if (src := backup_server_dir / f).exists():
+            log(C['C'], f"[backup] Copying {f}")
             shutil.copy2(src, server_dir / f)
     for f in BACKUP_ROOT_FILES:
         if (src := backup_dir / f).exists():
             shutil.copy2(src, ROOT_DIR / f)
+        else:
+            log(C['Y'], f"[backup] Warning: {f} missing from backup")
     return True
 
 def install_from_extract(extract_dir, server_dir):
