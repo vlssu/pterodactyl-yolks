@@ -64,7 +64,7 @@ OAUTH_SCOPE = "openid offline auth:server"
 VERSION_PATTERN = r'^\d{4}\.\d{2}\.\d{2}-[a-f0-9]+$'
 VERSION_FILE = ".version"
 PATCHLINE_FILE = ".patchline"
-BACKUP_SERVER_FILES = ["HytaleServer.jar", "HytaleServer.aot"]
+BACKUP_SERVER_FILES = ["HytaleServer.jar", "HytaleServer.aot", ".version", ".patchline"]
 USER_CONFIG_FILES = ["config.json", "bans.json", "whitelist.json", "permissions.json"]
 BACKUP_ROOT_FILES = ["Assets.zip"]
 
@@ -480,7 +480,7 @@ def plan_update(session, server_version, patchline, local_version, local_patchli
     if server_version == "latest":
         if not AUTO_UPDATE and has_jar:
             if local_patchline and local_patchline != patchline and backup_dir.exists():
-                if backups := sorted([d for d in backup_dir.iterdir() if d.is_dir() and (d / "HytaleServer.jar").exists()], reverse=True):
+                if backups := sorted([d for d in backup_dir.iterdir() if d.is_dir() and (d / "Server" / "HytaleServer.jar").exists()], reverse=True):
                     return UpdatePlan.BACKUP, backups[0].name, backups[0]
             return UpdatePlan.NONE, "", None
         if maven_latest := get_maven_latest(session, patchline):
@@ -499,7 +499,7 @@ def plan_update(session, server_version, patchline, local_version, local_patchli
     elif server_version == "previous":
         if not backup_dir.exists():
             die(f"[backup] No backups in {patchline}")
-        backups = sorted([d for d in backup_dir.iterdir() if d.is_dir() and d.name != local_version and (d / "HytaleServer.jar").exists()], reverse=True)
+        backups = sorted([d for d in backup_dir.iterdir() if d.is_dir() and d.name != local_version and (d / "Server" / "HytaleServer.jar").exists()], reverse=True)
         if not backups:
             die("[backup] No previous backup")
         return (UpdatePlan.NONE, "", None) if local_version == backups[0].name and has_jar else (UpdatePlan.BACKUP, backups[0].name, backups[0])
