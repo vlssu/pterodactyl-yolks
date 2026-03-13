@@ -675,7 +675,8 @@ def main():
             die("[auth] Authentication required")
     # Authentication for server startup
     if FLAGS['auth']:
-        auth_mgr = AuthManager(session, HYTALE_AUTH_STATE_PATH)
+        if 'auth_mgr' not in locals():
+            auth_mgr = AuthManager(session, HYTALE_AUTH_STATE_PATH)
         if auth_mgr.ensure_authenticated() and auth_mgr.ensure_session():
             os.environ.update({
                 'HYTALE_SERVER_SESSION_TOKEN': auth_mgr.state.session_token,
