@@ -339,6 +339,8 @@ is tagged correctly.
   * `ghcr.io/pelican-eggs/yolks:wine_9`
 * [`Wine 10`](/wine/10)
   * `ghcr.io/pelican-eggs/yolks:wine_10`
+  * [`Wine 10`](/wine/11)
+  * `ghcr.io/pelican-eggs/yolks:wine_11`
 * [`Wine latest`](/wine/latest/)
   * `ghcr.io/pelican-eggs/yolks:wine_latest`
 * [`Wine devel`](/wine/devel/)
