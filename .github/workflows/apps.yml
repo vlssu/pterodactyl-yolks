@@ -8,6 +8,9 @@ on:
       - master
     paths:
       - apps/**
+permissions:
+  packages: write
+
 jobs:
   push:
     name: "yolks:apps_${{ matrix.app }}"

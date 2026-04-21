@@ -8,6 +8,9 @@ on:
       - master
     paths:
       - games/**
+permissions:
+  packages: write
+
 jobs:
   pushAMD64:
     name: "games_AMD64:${{ matrix.game }}"
@@ -19,18 +22,24 @@ jobs:
           - altv
           - arma3
           - dayz
+          - hytale
           - mohaa
           - rust
           - samp
           - source
           - valheim
           - thebattleforwesnoth
+          - zandronum
 
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
         with:
           buildkitd-flags: --debug
+      - id: lower-repo
+        name: Repository to lowercase
+        run: |
+          echo "repository=${GITHUB_REPOSITORY_OWNER@L}" >> $GITHUB_OUTPUT
       - uses: docker/login-action@v3
         with:
           registry: registry.cn-shanghai.aliyuncs.com
@@ -69,6 +78,10 @@ jobs:
       - uses: docker/setup-buildx-action@v3
         with:
           buildkitd-flags: --debug
+      - id: lower-repo
+        name: Repository to lowercase
+        run: |
+          echo "repository=${GITHUB_REPOSITORY_OWNER@L}" >> $GITHUB_OUTPUT
       - uses: docker/login-action@v3
         with:
           registry: registry.cn-shanghai.aliyuncs.com

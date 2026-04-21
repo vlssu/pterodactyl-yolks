@@ -2,7 +2,7 @@ FROM        --platform=$TARGETOS/$TARGETARCH registry.cn-shanghai.aliyuncs.com/p
 
 LABEL       author="Torsten Widmann" maintainer="info@goover.de"
 
-ENV         DEBIAN_FRONTEND noninteractive
+ENV         DEBIAN_FRONTEND=noninteractive
 
 RUN         apt update -y \
             && apt upgrade -y \

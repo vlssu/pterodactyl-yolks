@@ -34,7 +34,7 @@ export INTERNAL_IP
 cd /home/container || exit 1
 
 # Print Java version
-printf "\033[1m\033[33mcontainer@pelican~ \033[0mjava -version\n"
+printf "\033[1m\033[33mcontainer~ \033[0mjava -version\n"
 java -version
 
 # Convert all of the "{{VARIABLE}}" parts of the command into the expected shell
