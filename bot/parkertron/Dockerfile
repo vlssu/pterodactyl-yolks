@@ -12,6 +12,9 @@ RUN     apt update -y \
         # add container user to run application
      && useradd -m -d /home/container container
 
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 USER    container
 ENV     USER=container HOME=/home/container
 WORKDIR /home/container

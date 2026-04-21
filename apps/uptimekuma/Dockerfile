@@ -8,6 +8,7 @@ RUN         apk update \
             && apk upgrade
 
 RUN         apk add --no-cache \
+                icu-data-full \
                 autoconf \
                 automake \
                 build-base \
@@ -42,7 +43,7 @@ RUN         npm install npm@latest -g
 # download cloudflared
 ARG         TARGETPLATFORM
 RUN         if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ARCHITECTURE=amd64; elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then ARCHITECTURE=arm64; fi \
-            && curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${ARCHITECTURE} -o /usr/bin/cloudflared
+            && curl -L https://ghfast.top/https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${ARCHITECTURE} -o /usr/bin/cloudflared
 RUN         chmod +x /usr/bin/cloudflared
 
 # install apprise

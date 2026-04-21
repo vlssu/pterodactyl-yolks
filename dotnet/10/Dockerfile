@@ -1,4 +1,4 @@
-FROM        --platform=$TARGETOS/$TARGETARCH ghcr.io/parkervcp/yolks:debian
+FROM        --platform=$TARGETOS/$TARGETARCH registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:debian
 
 LABEL       author="Torsten Widmann" maintainer="info@goover.de"
 
@@ -12,6 +12,9 @@ RUN         apt update -y \
             && chmod +x dotnet-install.sh \
 			&& ./dotnet-install.sh -i /usr/share -v $D_V \
             && ln -s /usr/share/dotnet /usr/bin/dotnet
+
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
 
 USER        container
 ENV         USER=container HOME=/home/container

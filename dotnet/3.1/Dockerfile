@@ -14,6 +14,9 @@ RUN         apt update -y \
             && ln -s /usr/share/dotnet /usr/bin/dotnet
 
 
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container

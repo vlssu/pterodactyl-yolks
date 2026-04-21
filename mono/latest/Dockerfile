@@ -18,6 +18,9 @@ RUN         if [ "$(uname -m)" = "x86_64" ]; then \
             fi
 
 
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container

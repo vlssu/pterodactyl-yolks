@@ -42,7 +42,7 @@ RUN         apt install -y \
                 pipx
 
 # Download Proton GE
-RUN         curl -sLOJ "$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/tags/GE-Proton8-32 | grep browser_download_url | cut -d\" -f4 | egrep .tar.gz)"
+RUN         curl -sLOJ "$(curl -s https://ghfast.top/https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/tags/GE-Proton8-32 | grep browser_download_url | cut -d\" -f4 | egrep .tar.gz | sed 's|https://github.com|https://ghfast.top/https://github.com|g')"
 RUN         tar -xzf GE-Proton*.tar.gz -C /usr/local/bin/ --strip-components=1
 RUN         rm GE-Proton*.*
 
@@ -56,12 +56,12 @@ RUN         dbus-uuidgen --ensure
 RUN         pipx install protontricks
 
 # Set up Winetricks
-RUN	        wget -q -O /usr/sbin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+RUN	        wget -q -O /usr/sbin/winetricks https://ghfast.top/https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
             && chmod +x /usr/sbin/winetricks
 
 # Install rcon
 RUN         cd /tmp/ \
-            && curl -sSL https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz > rcon.tar.gz \
+            && curl -sSL https://ghfast.top/https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz > rcon.tar.gz \
             && tar xvf rcon.tar.gz \
             && mv rcon-0.10.3-amd64_linux/rcon /usr/local/bin/
 # Setup user and working directory

@@ -48,7 +48,7 @@ DOWNLOADER_ARGS=()
 DOWNLOADER_ARGS+=("-credentials-path" "$CREDENTIALS_PATH")
 
 PSAVER=${PSAVER:-0}
-PSAVER_RELEASES_URL="https://api.github.com/repos/nitrado/hytale-plugin-performance-saver/releases/latest"
+PSAVER_RELEASES_URL="https://ghfast.top/https://api.github.com/repos/nitrado/hytale-plugin-performance-saver/releases/latest"
 PSAVER_PLUGINS_DIR="/home/container/mods"
 PSAVER_JAR_NAME="Nitrado_PerformanceSaver"
 

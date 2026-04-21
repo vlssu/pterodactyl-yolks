@@ -17,6 +17,9 @@ RUN         apt update \
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container

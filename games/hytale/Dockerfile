@@ -1,7 +1,7 @@
 FROM        --platform=$TARGETOS/$TARGETARCH eclipse-temurin:25-jdk-noble
 
 LABEL       org.opencontainers.image.authors="Michael Parker <parker@pelican.dev>, gOOvER <eggs@goover.dev>" \
-            org.opencontainers.image.source="https://github.com/pelican-eggs/yolks" \
+            org.opencontainers.image.source="https://ghfast.top/https://github.com/pelican-eggs/yolks" \
             org.opencontainers.image.licenses=MIT
 
 RUN         apt update -y \
@@ -34,6 +34,9 @@ RUN         sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
 ENV         LANG en_US.UTF-8
 ENV         LANGUAGE en_US:en
 ENV         LC_ALL en_US.UTF-8
+
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
 
 ## Setup user and working directory
 RUN         useradd -m -d /home/container -s /bin/bash container

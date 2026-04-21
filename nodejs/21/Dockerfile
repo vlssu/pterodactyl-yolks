@@ -34,6 +34,9 @@ RUN         npm install -g corepack@latest
 RUN         corepack enable
 RUN         corepack prepare pnpm@latest --activate
 
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container

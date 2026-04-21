@@ -21,6 +21,9 @@ RUN         if [ "$(uname -m)" = "x86_64" ]; then \
                 rm libssl1.1_1.1.0g-2ubuntu4_i386.deb; \
             fi
 			
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 USER        container
 ENV         USER=container HOME=/home/container
 WORKDIR     /home/container

@@ -7,6 +7,9 @@ LABEL        org.opencontainers.image.licenses=MIT
 
 ENV          DEBIAN_FRONTEND=noninteractive
 
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 RUN          useradd -m -d /home/container -s /bin/bash container
 
 RUN          ln -s /home/container/ /nonexistent

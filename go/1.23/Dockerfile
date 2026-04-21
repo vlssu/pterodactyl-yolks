@@ -1,7 +1,7 @@
 FROM        --platform=$TARGETOS/$TARGETARCH golang:1.23-alpine
 
 
-RUN         apk add --update --no-cache ca-certificates tzdata \
+RUN         apk add --update --no-cache ca-certificates tzdata icu-data-full \
 				&& adduser -D -h /home/container container
 
 USER        container

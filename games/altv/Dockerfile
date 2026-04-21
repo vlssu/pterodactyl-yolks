@@ -23,6 +23,9 @@ RUN     wget https://packages.microsoft.com/config/debian/12/packages-microsoft-
 RUN     update-locale lang=en_US.UTF-8 \
         && dpkg-reconfigure --frontend noninteractive locales
 
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 USER    container
 ENV     USER=container HOME=/home/container
 WORKDIR /home/container
