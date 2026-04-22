@@ -67,7 +67,7 @@ fi
 if [[ $WINETRICKS_RUN =~ mono ]]; then
         echo "Installing mono"
         WINETRICKS_RUN=${WINETRICKS_RUN/mono}
-        MONO_VERSION=$(curl -s https://ghfast.top/https://api.github.com/repos/wine-mono/wine-mono/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')
+        MONO_VERSION=$(curl -s https://api.github.com/repos/wine-mono/wine-mono/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')
         MONO_URL="https://ghfast.top/https://github.com/wine-mono/wine-mono/releases/download/${MONO_VERSION}/wine-mono-${MONO_VERSION#wine-mono-}-x86.msi"
         
         if [ -z "$MONO_VERSION" ]; then

@@ -30,7 +30,7 @@ RUN         dpkg --add-architecture i386 \
 
 ## install rcon client (bercon)
 RUN         cd /tmp/ \
-            && curl -sSL https://ghfast.top/https://github.com/WoozyMasta/bercon/releases/download/1.0.0/bercon > bercon \
+            && curl -sSL https://github.com/WoozyMasta/bercon/releases/download/1.0.0/bercon > bercon \
             && mv bercon /usr/local/bin/ \
             && chmod +x /usr/local/bin/bercon
 

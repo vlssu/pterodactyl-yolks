@@ -25,7 +25,7 @@ RUN             dpkg --add-architecture i386 \
 
 # Install rcon
 RUN             cd /tmp/ \
-                && curl -sSL https://ghfast.top/https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz > rcon.tar.gz \
+                && curl -sSL https://github.com/gorcon/rcon-cli/releases/download/v0.10.3/rcon-0.10.3-amd64_linux.tar.gz > rcon.tar.gz \
                 && tar xvf rcon.tar.gz \
                 && mv rcon-0.10.3-amd64_linux/rcon /usr/local/bin/
 
@@ -37,7 +37,7 @@ RUN             apt update
 RUN             apt install --install-recommends winehq-stable cabextract wine-binfmt -y
 
 # Set up Winetricks
-RUN	            wget -q -O /usr/sbin/winetricks https://ghfast.top/https://raw.githubusercontent.com/pelican-eggs/winetricks/master/src/winetricks \
+RUN	            wget -q -O /usr/sbin/winetricks https://raw.githubusercontent.com/pelican-eggs/winetricks/master/src/winetricks \
                 && chmod +x /usr/sbin/winetricks
 
 ENV             HOME=/home/container
