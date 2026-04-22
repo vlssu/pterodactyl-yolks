@@ -32,3 +32,5 @@ ENV         DEBIAN_FRONTEND=noninteractive
 RUN         apt update \
 		&& apt upgrade -y \
 		&& apt -y --no-install-recommends install ca-certificates curl git unzip zip tar jq
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
