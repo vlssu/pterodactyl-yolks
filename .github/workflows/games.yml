@@ -22,8 +22,11 @@ jobs:
           - altv
           - arma3
           - dayz
+          - dontstarve
           - hytale
+          - minetest
           - mohaa
+          - mta
           - rust
           - samp
           - source

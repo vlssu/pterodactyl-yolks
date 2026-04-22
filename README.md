@@ -56,9 +56,9 @@
 
 ### [Cassandra](/cassandra)
 
-* [`cassandra_java8_python27`](/cassandra/cassandra_java8_python2)
-  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:cassandra_java11_python2`
-* [`cassandra_java11_python3`](/cassandra/cassandra_java11_python3)
+* [`cassandra_java8_python2`](/cassandra/java8_python2)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:cassandra_java8_python2`
+* [`cassandra_java11_python3`](/cassandra/java11_python3)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:cassandra_java11_python3`
 
 ### [Dart](/dart)
@@ -90,6 +90,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_8`
 * [`dotnet9.0`](/dotnet/9)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_9`
+* [`dotnet10.0`](/dotnet/10)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:dotnet_10`
 
 ### [Elixir](/elixir)
 
@@ -112,6 +114,10 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:erlang_23`
 * [`erlang24`](/erlang/24)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:erlang_24`
+* [`erlang25`](/erlang/25)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:erlang_25`
+* [`erlang26`](/erlang/26)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:erlang_26`
 
 ### [Games](/games)
 
@@ -121,6 +127,10 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:arma3`
 * [`dayz`](/games/dayz)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:dayz`
+* [`dontstarve`](/games/dontstarve)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:dontstarve`
+* [`hytale`](/games/hytale)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:hytale`
 * [`minetest`](/games/minetest)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:minetest`  
 * [`mohaa`](games/mohaa)
@@ -137,6 +147,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:thebattleforwesnoth`
 * [`valheim`](/games/valheim)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:valheim`
+* [`zandronum`](/games/zandronum)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:zandronum`
 
 ### [Golang](/go)
 
@@ -177,6 +189,10 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_21`
 * [`java22`](/java/22)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_22`
+* [`java25`](/java/25)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_25`
+* [`java26`](/java/26)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:java_26`
 
 ### [MariaDB](/mariadb)
 
@@ -241,6 +257,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_23`
 * [`node24`](/nodejs/24)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_24`
+* [`node25`](/nodejs/25)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_25`
 
 ### [PostgreSQL](/postgres)
 
@@ -255,10 +273,18 @@
   * [`Postgres 13`](/postgres/13)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:postgres_13`
   * [`Postgres 14`](/postgres/14)
-    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:postgres_14`  
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:postgres_14`
+  * [`Postgres 16`](/postgres/16)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:postgres_16`
+  * [`Postgres 17`](/postgres/17)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:postgres_17`
+  * [`Postgres 18`](/postgres/18)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:postgres_18`
 
 ### [Python](/python)
 
+* [`python2.7`](/python/2.7)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_2.7`
 * [`python3.7`](/python/3.7)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.7`
 * [`python3.8`](/python/3.8)
@@ -273,6 +299,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.12`
 * [`python3.13`](/python/3.13)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.13`
+* [`python3.14`](/python/3.14)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:python_3.14`
 
 ### [Redis](/redis)
 
@@ -282,6 +310,8 @@
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:redis_6`
   * [`Redis 7`](/redis/7)
     * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:redis_7`
+  * [`Redis 8`](/redis/8)
+    * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:redis_8`
 
 ### [Rust](/rust)
 
@@ -319,6 +349,7 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_8`
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_9`
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_10`
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_11`
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_latest`
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_devel`
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:wine_staging`
@@ -331,3 +362,13 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:debian`
 * [`ubuntu-install`](/installers/ubuntu)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:ubuntu`
+* [`java_8-install`](/installers/java_8)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:java_8`
+* [`java_11-install`](/installers/java_11)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:java_11`
+* [`java_17-install`](/installers/java_17)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:java_17`
+* [`java_21-install`](/installers/java_21)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:java_21`
+* [`java_25-install`](/installers/java_25)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/installers:java_25`
