@@ -5,6 +5,9 @@ LABEL author="Daniel Barton" maintainer="danny6167@gmail.com"
 ENV   DEBIAN_FRONTEND=noninteractive
 
 ## add container user
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 RUN   useradd -m -d /home/container -s /bin/bash container
 
 

@@ -2,7 +2,7 @@ FROM        --platform=$TARGETOS/$TARGETARCH registry.cn-shanghai.aliyuncs.com/p
 
 LABEL       author="Torsten Widmann" maintainer="info@goover.de"
 
-ENV         DEBIAN_FRONTEND noninteractive
+ENV         DEBIAN_FRONTEND=noninteractive
 
 RUN         apt update -y \
             && apt upgrade -y \
@@ -13,6 +13,9 @@ RUN         apt update -y \
 			&& ./dotnet-install.sh -i /usr/share -v $D_V \
             && ln -s /usr/share/dotnet /usr/bin/dotnet
 
+
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
 
 USER        container
 ENV         USER=container HOME=/home/container

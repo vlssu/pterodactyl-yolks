@@ -8,6 +8,7 @@ RUN         apk update \
             && apk upgrade
 
 RUN         apk add --no-cache \
+                icu-data-full \
                 autoconf \
                 automake \
                 build-base \

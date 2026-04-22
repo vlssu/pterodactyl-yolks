@@ -26,6 +26,9 @@ RUN         wget https://ryanfortner.github.io/box64-debs/box64.list -O /etc/apt
 
 
 RUN		useradd -d /home/container -m container
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 USER    container
 ENV     USER=container HOME=/home/container
 WORKDIR /home/container

@@ -1,9 +1,9 @@
-FROM        --platform=$TARGETOS/$TARGETARCH debian:bullseye-slim
+FROM        --platform=$TARGETOS/$TARGETARCH debian:bookworm-slim
 
 LABEL       author="David Wolfe (Red-Thirten)" maintainer="red_thirten@yahoo.com"
 
-LABEL       org.opencontainers.image.source="https://github.com/parkervcp/yolks"
-LABEL       org.opencontainers.image.licenses=MIT
+LABEL       org.opencontainers.image.source="https://github.com/pelican-eggs/yolks"
+LABEL       org.opencontainers.image.licenses=AGPL-3.0-or-later
 
 ## Update base packages and install dependencies
 ENV         DEBIAN_FRONTEND=noninteractive
@@ -17,7 +17,6 @@ RUN         dpkg --add-architecture i386 \
                 iproute2 \
                 gettext-base \
                 ca-certificates \
-                numactl \
                 libssl-dev \
                 lib32gcc-s1 \
                 libsdl2-2.0-0 \
@@ -27,8 +26,8 @@ RUN         dpkg --add-architecture i386 \
                 lib32stdc++6 \
                 libnss-wrapper \
                 libnss-wrapper:i386 \
-                libtbb2 \
-                libtbb2:i386 \
+                libtbbmalloc2 \
+                libtbbmalloc2:i386 \
                 tini
 
 ## Configure locale
@@ -41,6 +40,9 @@ RUN         touch ${NSS_WRAPPER_PASSWD} ${NSS_WRAPPER_GROUP} \
             && chgrp 0 ${NSS_WRAPPER_PASSWD} ${NSS_WRAPPER_GROUP} \
             && chmod g+rw ${NSS_WRAPPER_PASSWD} ${NSS_WRAPPER_GROUP}
 ADD         passwd.template /passwd.template
+
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
 
 ## Setup user and working directory
 RUN         useradd -m -d /home/container -s /bin/bash container

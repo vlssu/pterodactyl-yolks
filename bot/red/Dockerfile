@@ -42,6 +42,9 @@ RUN           pip install python-forecastio tweepy unidecode mcstatus bs4 sqlalc
 RUN           mkdir -p /home/container/.config/Red-DiscordBot/
 RUN           ln -s /home/container/.config/Red-DiscordBot/ /usr/local/share/Red-DiscordBot
 
+RUN 		apt-get install -y locales \
+			&& locale-gen zh_CN.UTF-8
+
 ## Setup user and working directory
 RUN         useradd -m -d /home/container -s /bin/bash container
 USER        container

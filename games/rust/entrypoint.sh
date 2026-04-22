@@ -29,7 +29,7 @@ echo ":/home/container$ ${MODIFIED_STARTUP}"
 if [[ "${FRAMEWORK}" == "carbon" ]]; then
     # Carbon: https://github.com/CarbonCommunity/Carbon
     echo "Updating Carbon..."
-    curl -sSL "https://github.com/CarbonCommunity/Carbon/releases/download/production_build/Carbon.Linux.Release.tar.gz" | tar zx
+    curl -sSL "https://ghfast.top/https://github.com/CarbonCommunity/Carbon/releases/download/production_build/Carbon.Linux.Release.tar.gz" | tar zx
     echo "Done updating Carbon!"
 
     export DOORSTOP_ENABLED=1
@@ -44,7 +44,7 @@ elif [[ "${FRAMEWORK}" == "oxide-staging" ]]; then
 elif [[ "$OXIDE" == "1" ]] || [[ "${FRAMEWORK}" == "oxide" ]]; then
     # Oxide: https://github.com/OxideMod/Oxide.Rust
     echo "Updating uMod..."
-    curl -sSL "https://github.com/OxideMod/Oxide.Rust/releases/latest/download/Oxide.Rust-linux.zip" > umod.zip
+    curl -sSL "https://ghfast.top/https://github.com/OxideMod/Oxide.Rust/releases/latest/download/Oxide.Rust-linux.zip" > umod.zip
     unzip -o -q umod.zip
     rm umod.zip
     echo "Done updating uMod!"
