@@ -127,6 +127,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:arma3`
 * [`dayz`](/games/dayz)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:dayz`
+* [`dontstarve`](/games/dontstarve)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:dontstarve`
 * [`hytale`](/games/hytale)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/games:hytale`
 * [`minetest`](/games/minetest)
