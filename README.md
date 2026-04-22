@@ -312,7 +312,7 @@ is tagged correctly.
   * `ghcr.io/pelican-eggs/yolks:rust_latest`
 
 ### [SteamCMD](/steamcmd)
-* [`SteamCMD Debian lastest`](/steamcmd/debian)
+* [`SteamCMD Debian latest`](/steamcmd/debian)
   * `ghcr.io/pelican-eggs/steamcmd:debian`
 * [`SteamCMD Debian Dotnet`](/steamcmd/dotnet)
   * `ghcr.io/pelican-eggs/steamcmd:dotnet`
