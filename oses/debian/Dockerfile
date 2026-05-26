@@ -15,7 +15,7 @@ ENV         USER=container HOME=/home/container
 
 ## Install dependencies
 RUN         apt update && apt install -y --no-install-recommends \
-                # pakcages for startup
+                # packages for startup
                 tini \
                 # certificate and signature
                 ca-certificates gnupg2 libssl-dev \
