@@ -12,8 +12,13 @@ RUN   apt install -y gcc g++ libgcc1 libc++-dev gdb libc6 git tar zip unzip libs
 
 
 RUN 		apt-get install -y locales \
-			&& locale-gen zh_CN.UTF-8
+			&& sed -i -e 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen \
+			&& sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+			&& locale-gen
 
+ENV         LANG=en_US.UTF-8 \
+            LANGUAGE=en_US:zh_CN \
+            LC_ALL=en_US.UTF-8
 ## add container user
 RUN   useradd -m -d /home/container -s /bin/bash container
 USER        container

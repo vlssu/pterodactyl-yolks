@@ -7,9 +7,6 @@ LABEL       org.opencontainers.image.licenses=MIT
 
 ENV         DEBIAN_FRONTEND=noninteractive
 
-RUN         apt-get install -y locales \
-                && locale-gen zh_CN.UTF-8
-
 RUN         useradd -m -d /home/container -s /bin/bash container
 
 RUN         ln -s /home/container/ /nonexistent
@@ -51,6 +48,15 @@ RUN         if [ ! "$(uname -m)" = "x86_64" ]; then \
                 dpkg -i libssl1.1_1.1.1f-1ubuntu2_arm64.deb && \
                 rm libssl1.1_1.1.1f-1ubuntu2_arm64.deb; \
             fi
+
+## Configure locale
+RUN         sed -i -e 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen \
+            && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+            && update-locale lang=en_US.UTF-8 \
+            && dpkg-reconfigure --frontend noninteractive locales
+ENV         LANG=en_US.UTF-8 \
+            LANGUAGE=en_US:zh_CN \
+            LC_ALL=en_US.UTF-8
 
 ## Configure locale
 RUN         update-locale lang=en_US.UTF-8 \
