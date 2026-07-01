@@ -259,7 +259,8 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_24`
 * [`node25`](/nodejs/25)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_25`
-
+* [`node26`](/nodejs/26)
+  * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:nodejs_26`
 ### [PostgreSQL](/postgres)
 
   * [`Postgres 9`](/postgres/9)
@@ -323,7 +324,7 @@
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/yolks:rust_latest`
 
 ### [SteamCMD](/steamcmd)
-* [`SteamCMD Debian lastest`](/steamcmd/debian)
+* [`SteamCMD Debian latest`](/steamcmd/debian)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:debian`
 * [`SteamCMD Debian Dotnet`](/steamcmd/dotnet)
   * `registry.cn-shanghai.aliyuncs.com/pterodactyl-images/steamcmd:dotnet`

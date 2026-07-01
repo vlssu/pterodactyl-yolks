@@ -72,6 +72,9 @@ jobs:
           - source
           - valheim
           - thebattleforwesnoth
+          - hytale
+          - minetest
+          - mta
     steps:
       - uses: actions/checkout@v4
       - name: Set up QEMU
